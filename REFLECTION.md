@@ -5,15 +5,12 @@ for this project. Please keep this document organized using Markdown. If you
 click on this file in your team's GitHub repository website, then you will see
 that the Markdown is transformed into nice looking HTML. 
 
-Here is a sample entry (delete this line; also: feel free to copy/paste/modify):
+## WED 2017-11-15 @ 1:15 PM EST
 
-## SUN 2017-11-12 @ 11:55 PM EST
+1. **DONE:** Downloaded skeleton code, created basic UML diagram, made skeleton 
+   classes for Game, GameChoiceScene, StartScene, Minesweeper, and Breakout
 
-1. **DONE:** Downloaded the skeleton code.
+2. **TODO:** Finish making skeleton classes, write ALL THE CODE IN ONE DAY
 
-2. **TODO:** Finish reading the project description.
-
-3. **PROB:** Had a hard time scheduling physicial meetings with each other at
-   first, but now that we've settled on a regular day/time things are looking
-   great! 
-
+3. **PROB:** Had a hard time committing because had wrong url for team repo, had 
+   a hard time saving a class file because name of folder was mineweeper
