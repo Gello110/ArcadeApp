@@ -20,6 +20,15 @@ public class ArcadeApp extends Application {
 
     } // start
 
+    /**
+     * Sets the current scene of the stage being shown.
+     *
+     * @param scene The scene to set
+     */
+    public void setCurrentScene(Scene scene) {
+
+    }
+
     public static void main(String[] args) {
 	try {
 	    Application.launch(args);

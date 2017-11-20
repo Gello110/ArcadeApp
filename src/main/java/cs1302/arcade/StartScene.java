@@ -7,4 +7,14 @@ import javafx.scene.Scene;
  */
 public class StartScene extends Scene {
 
+    private Stage mainStage;
+
+    /**
+     * Constructs a StartScene Object.
+     *
+     * @param mainStage the Stage Object where this Scene will be displayed.
+     */
+    public StartScene(Stage mainStage) {
+	this.mainStage = mainStage;
+    }
 }
