@@ -53,7 +53,9 @@ public class GameChoiceScene extends Scene {
 
 	bSelector.setX(300); //Set image location
 	bSelector.setY(100);
-	bSelector.setOnMouseClicked(event -> mainClass.setScene(new Breakout())}); //On click open breakout
+	bSelector.setOnMouseClicked(event -> mainClass.setScene(new Breakout())); //On click open breakout
+
+	parent.getChildren().addAll(msSelector, bSelector); //Add children to parent
     }
 
     /**
