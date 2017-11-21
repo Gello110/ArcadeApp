@@ -9,6 +9,10 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.effect.Light;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 
 /**
  * The start screen displayed to the player when they first open the application

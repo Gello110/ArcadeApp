@@ -32,7 +32,7 @@ public class Minesweeper extends Game{
 
     @Override
     public boolean isOver(){
-
+	return true;
 
     }//isOver
 
