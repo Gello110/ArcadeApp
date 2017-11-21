@@ -14,3 +14,10 @@ that the Markdown is transformed into nice looking HTML.
 
 3. **PROB:** Had a hard time committing because had wrong url for team repo, had 
    a hard time saving a class file because name of folder was mineweeper
+
+## MON 2017-11-20 @ 8:00 PM EST
+
+1. **DONE:** Finished GameChoiceScene, Start Scene, Board, Cell, and CellType 
+   	     and added resources to project
+2. **TODO:** Start and Finish Breakout and MinsweeperGame
+3. **PROB:** Had some trouble with enums
