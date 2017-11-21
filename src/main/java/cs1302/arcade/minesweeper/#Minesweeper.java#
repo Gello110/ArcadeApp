@@ -1,22 +1,22 @@
-package cs1302.arcade.breakout;
+package cs1302.arcade.minesweeper;
 
 import javafx.scene.Scene;
 import cs1302.arcade.Game;
 
 /**
- *  Class representing a breakout game
+ *  Class representing a minesweeper game
  */
-public class Breakout extends Game{
+public class Minesweeper extends Game{
     
     
 
     /**
-     *  Constructs a breakout game
+     *  Constructs a minesweeper game
      */
-    public Breakout(){
-	super("Breakout");
+    public Minesweeper(){
+	super("Minesweeper");
 
-    }//Breakout
+    }//Minesweeper
 
     @Override
     public void initScene(Scene scene){
@@ -32,8 +32,8 @@ public class Breakout extends Game{
 
     @Override
     public boolean isOver(){
-
+       
 
     }//isOver
 
-}//Breakout
+}//Minsweeper

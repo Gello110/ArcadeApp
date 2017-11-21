@@ -1,20 +1,24 @@
 package cs1302.arcade.minesweeper;
 
 import java.util.Random;
+import javafx.scene.image.ImageView;
+import java.util.ArrayList;
+import javafx.scene.image.Image;
 
 /**
  *  Class that represents a board of cells for minesweeper
  */
 public class Board{
     private int round;
-    private Cell[16][16] board;
+    private Cell[][] board;
 
     /**
      *  Constructs a Board for minesweeper 
      */
     public Board(){
+	board = new Cell[16][16];
 	round = 0;
-	ArrayList<Cell> unmined = new ArrayList<>;
+	ArrayList<Cell> unmined = new ArrayList<>();
 
 
 	for(int i = 0; i < board.length; i++){
@@ -29,7 +33,7 @@ public class Board{
 	for(int i = 0; i < 40; i++){
 	    Random r = new Random();
 	    int j = r.nextInt(unmined.size());
-	    unmined.get(r.nextInt(j)).setmine();
+	    unmined.get(r.nextInt(j)).setMine();
 	    unmined.remove(j);
 	    
 	}//for i
@@ -61,8 +65,8 @@ public class Board{
 
 	for(int i = row - 1; i < row + 2; i++){
 	    for(int j = col - 1; j < col + 2; j++){
-		if(-1 < i && i  < rows && -1 < j && j< cols){
-		    if(board[i][j].getIsMine()){
+		if(-1 < i && i  < board.length - 1 && -1 < j && j< board[0].length - 1){
+		    if(board[i][j].getType().equals(CellType.MINE)){
 			count++;
 			
 		    }//if
@@ -70,6 +74,7 @@ public class Board{
 		}//if
 		
 	    }//for j
+
 	}//for i
 
     }//surr
@@ -88,14 +93,14 @@ public class Board{
 	   || col > board[0].length || board[row][col].getIsChecked()
 	   || board[row][col].getType().equals(CellType.MINE)
 	   || !player){
-	    return;
+	    return null;
 
 	}//if row, col is out of bounds or if the cell is a mine
 
-	if(board[row][col].getType().equals(CellType.MINE
-					    && player)){
+	if(board[row][col].getType().equals(CellType.MINE)
+	   && player){
 	    lose();
-	    return;
+	    return null;
 
 	}//if player initiated and a mine
 	
@@ -115,7 +120,8 @@ public class Board{
 	}//if no mines surround current spot
 	
 	board[row][col].reveal();
-
+	return null;
+	
     }//reveal
 
     /**
@@ -165,7 +171,7 @@ public class Board{
      *  @param the picture to show the user
      */
     public ImageView flag(int row, int col){
-	return board[row][col].change(true);
+	return new ImageView(board[row][col].change(true).getPic());
 	round++;
 
     }//flag
@@ -178,7 +184,7 @@ public class Board{
      *  @return the image to show the user
      */
     public ImageView unflag(int row, int col){
-	return board[row][col].change(false);
+	return new ImageView(board[row][col].change(false).getPic());
 	round++;
 
     }//unflag
@@ -192,7 +198,7 @@ public class Board{
 	if(round >= 216){
 	    return 0;
 	}
-	return row * col - round - 40;
+	return board.length * board[0].length - round - 40;
 
     }//getScore
 

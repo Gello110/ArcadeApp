@@ -1,7 +1,7 @@
 package cs1302.arcade.minesweeper;
 
 import javafx.scene.Scene;
-
+import cs1302.arcade.Game;
 
 /**
  *  Class representing a minesweeper game

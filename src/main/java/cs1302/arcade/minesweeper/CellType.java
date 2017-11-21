@@ -1,11 +1,13 @@
 package cs1302.arcade.minesweeper;
 
+import javafx.scene.image.Image;
+
 /** 
  *  Enumeration representing the state of a cell
  */
 public enum CellType{
     FLAGGED(-2, "minesweeper_flag.jpg" ),
-	UNPRESSED(-3, "minesweeper_unpressed.jpg");
+	UNPRESSED(-3, "minesweeper_unpressed.jpg"),
 	EMPTY(0, "minesweeper_pressed.jpg"),
 	MINE(-1, "minesweeper_bomb.jpg"),
 	ONE(1, "minesweeper_1.jpg"),

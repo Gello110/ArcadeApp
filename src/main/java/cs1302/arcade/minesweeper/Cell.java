@@ -1,5 +1,7 @@
 package cs1302.arcade.minesweeper;
 
+import javafx.scene.image.Image;
+
 /**
  *  Represents a cell on the minesweeper board
  */
