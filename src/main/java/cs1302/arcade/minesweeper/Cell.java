@@ -84,7 +84,7 @@ public class Cell{
     /**
      *  flags or unflags cell
      *
-     *  @param boolean <code>true</code> if flagging, <code>false</code> if unflagging
+     *  @param flagging <code>true</code> if flagging, <code>false</code> if unflagging
      */
     public CellType change(boolean flagging){
 	if(state.equals(CellType.MINE)){

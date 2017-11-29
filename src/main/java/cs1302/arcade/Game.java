@@ -6,7 +6,6 @@ public abstract class Game {
 
     private String name;
     private int score;
-    private Scene currentScene;
 
     /**
      * Constructs the game object.
@@ -14,12 +13,10 @@ public abstract class Game {
      * @param name The name of the game.
      */
     public Game(String name) {
-	this.name = name; // Set game name
+	    this.name = name; // Set game name
 
-	//TODO Construct scene
-
-	initScene(currentScene); //Init scene
-	initGame(); //begin game
+        initScene(); //Init scene
+        initGame(); //begin game
     }
 
     /**
@@ -66,14 +63,5 @@ public abstract class Game {
      */
     protected void setScore(int score) {
 	this.score = score;
-    }
-
-    /**
-     * Gets the current scene of this game.
-     *
-     * @return The current Scene object for this game.
-     */
-    public Scene getScene() {
-	return this.currentScene;
     }
 }

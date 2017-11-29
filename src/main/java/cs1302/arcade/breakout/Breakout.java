@@ -1,7 +1,9 @@
 package cs1302.arcade.breakout;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import cs1302.arcade.Game;
+import javafx.scene.layout.Region;
 
 /**
  *  Class representing a breakout game
@@ -19,9 +21,11 @@ public class Breakout extends Game{
     }//Breakout
 
     @Override
-    public void initScene(Scene scene){
-	
+    public Scene initScene(){
+        Region region = new Region();
+	    Scene scene = new Scene(region);
 
+        return scene;
     }//init Scene
 
     @Override
@@ -32,8 +36,7 @@ public class Breakout extends Game{
 
     @Override
     public boolean isOver(){
-
-
+        return false;
     }//isOver
 
 }//Breakout
