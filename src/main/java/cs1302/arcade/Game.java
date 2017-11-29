@@ -25,9 +25,9 @@ public abstract class Game {
     /**
      * Where each game initializes their scene.
      *
-     * @param scene The scene the game will use.
+     * @return The scene the game will use.
      */
-    public abstract void initScene(Scene scene);
+    public abstract Scene initScene();
     
     /**
      * Updates the scene that is displayed to the player.

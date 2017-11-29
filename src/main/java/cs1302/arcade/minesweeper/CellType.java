@@ -49,7 +49,7 @@ public enum CellType{
      *
      *  @return the image that represents the cell
      */
-    public Image getPic(){
+    public Image getImage(){
 	return pic;
 
     }//

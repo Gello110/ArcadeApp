@@ -9,14 +9,17 @@ public class Cell{
     private CellType type;
     private CellType state;
     private boolean isChecked;
+	private int row;
+	private int col;
     
     /** 
      *  Constructs a cell object
      */
-    public Cell(){
-	state = CellType.UNPRESSED;
-	isChecked = false;
-
+    public Cell(int row, int col){
+		state = CellType.UNPRESSED;
+		isChecked = false;
+		this.row = row;
+		this.col = col;
     }//Cell
 
     /**
@@ -138,4 +141,21 @@ public class Cell{
 	
     }//getType
 
+	/**
+	 * Get the row this cell is located on
+	 *
+	 * @return The row this cell is located on
+	 */
+	public int getRow() {
+    	return this.row;
+	}
+
+	/**
+	 * Get the column this cell is located on
+	 *
+	 * @return The column this cell is location on
+	 */
+	public int getColumn() {
+    	return this.col;
+	}
 }//Cell
