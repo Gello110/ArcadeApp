@@ -76,6 +76,8 @@ public class Board {
 				}//if
 			}//for j
 		}//for i
+
+		return count;
     }//surr
 
     /**
@@ -83,7 +85,7 @@ public class Board {
      *
      *  @param row  t if(flagging){he row of the cell to be revealed
      *  @param col  the columm of the cell to be revealed
-     *  @param the picture to show to the user
+     *  @return the picture to show to the user
      *  @param player <code>true</code> if called non-recursively
      */
     public ImageView reveal(int row, int col, boolean player){
@@ -117,7 +119,15 @@ public class Board {
 
 		}//if no mines surround current spot
 
-		return board[row][col].reveal();
+		ImageView toReturn = new ImageView();
+
+		toReturn.setImage(board[row][col].reveal().getImage());
+		toReturn.setPreserveRatio(true);
+		toReturn.setSmooth(true);
+		toReturn.setFitHeight(15);
+		toReturn.setFitWidth(15);
+
+		return toReturn;
     }//reveal
 
     /**
@@ -144,11 +154,11 @@ public class Board {
      *  @return <code>true</code>if the player has won
      */
     public boolean hasWon(){
-		for(int i = 0; i < board.length; i++){
-			for(int j = 0; j < board[0].length; j++){
-				Cell cell = board[i][j]; //Cell at point
+		for (Cell[] aBoard : board) {
+			for (int j = 0; j < board[0].length; j++) {
+				Cell cell = aBoard[j]; //Cell at point
 
-				if(cell.getType() != CellType.MINE && cell.getState() == CellType.UNPRESSED) //Cell isn't revealed and isn't a mine
+				if (cell.getType() != CellType.MINE && cell.getState() == CellType.UNPRESSED) //Cell isn't revealed and isn't a mine
 					return false; //They haven't revealed all non-mine cells
 			}//for j
 		}//for i
@@ -168,7 +178,7 @@ public class Board {
      *
      *  @param row  the row of the cell to be flagged
      *  @param col the column of the cell to be flagged
-     *  @param the picture to show the user
+     *  @return the picture to show the user
      */
     public ImageView flag(int row, int col){
     	round++;
@@ -207,7 +217,7 @@ public class Board {
 	public int getFlagged() {
     	int flagged = 0;
 
-    	for(Cell[] cellRow : cells) { //Iterate through cells
+    	for(Cell[] cellRow : board) { //Iterate through cells
     		for(Cell c : cellRow) {
     			if(c.getState() == CellType.FLAGGED) //Check if flagged
     				flagged++; //Increment number of flagged cells by one

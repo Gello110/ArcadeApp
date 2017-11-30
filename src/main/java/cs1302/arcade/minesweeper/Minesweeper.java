@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseAction;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
@@ -73,14 +73,11 @@ public class Minesweeper extends Game{
         bPane.setCenter(newGame);
         bPane.setLeft(time);
 
-        bPane.setAlignment(minesLeft, Pos.CENTER_LEFT); //Set alignment
-        bPane.setAlignment(newGame, Pos.CENTER);
-        bPane.setAlignment(time, Pos.CENTER_RIGHT);
+        BorderPane.setAlignment(minesLeft, Pos.CENTER_LEFT); //Set alignment
+        BorderPane.setAlignment(newGame, Pos.CENTER);
+        BorderPane.setAlignment(time, Pos.CENTER_RIGHT);
 
         gPane = new GridPane(); //Will contain the grid of tiles the player interacts with
-
-        gPane.setPrefColumns(GAME_COLUMNS); //Set width of game grid
-        gPane.setPrefRows(GAME_ROWS);
 
         Cell[][] board = gameBoard.getBoard(); //Get game board
 
