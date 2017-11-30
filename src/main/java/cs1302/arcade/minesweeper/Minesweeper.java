@@ -3,6 +3,10 @@ package cs1302.arcade.minesweeper;
 import java.util.Set;
 import java.util.HashSet;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
@@ -14,6 +18,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import cs1302.arcade.Game;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  *  Class representing a minesweeper game
@@ -52,8 +58,8 @@ public class Minesweeper extends Game{
         time = new Text(String.format("%03d", timer)); //The time spent playing the game
 
 	//makes keyframe
-	timeline = new Timeline();
-	keyframe = new KeyFrame(Duration.seconds(1), e -> {
+	Timeline timeline = new Timeline();
+	KeyFrame keyframe = new KeyFrame(Duration.seconds(1), e -> {
 		Thread t = new Thread(() -> {
 			timer++;
 			Platform.runLater(() -> time.setText(String.format(
@@ -67,7 +73,7 @@ public class Minesweeper extends Game{
 	timeline.getKeyFrames().add(keyframe);
 
 
-        newGame.setOnAction(action -> gameBoard = new Board(GAME_ROWS, GAME_COLUMNS)); //Reset board for new game
+        newGame.setOnAction(action -> gameBoard = new Board(GAME_ROWS, GAME_COLUMNS, this)); //Reset board for new game
 
         bPane.setLeft(minesLeft); //Set position
         bPane.setCenter(newGame);
@@ -109,51 +115,59 @@ public class Minesweeper extends Game{
 	    message.setText("Congrats\nYou Won\nScore: " + gameBoard.getScore());
 
 	}else{
-	    message.setText("You Lost\mScore: " + gameBoard.getScore());
+	    message.setText("You Lost\nScore: " + gameBoard.getScore());
 
 	    //reveals all the mines in the game
 	    Cell[][] board = gameBoard.getBoard();
-	    for(int i = 0; i < board.length; i++){
-		for(int j = 0; j < board[0].length; j++){
-		    Cell c = board[i][j];
-		    boolean isMine = board[i][j].getType() == CellType.MINE;
-		    boolean isFlagged = board[i][j].getState() == CellType.FLAGGED;
-		    if(isMine && !isFlagged){
-			c.setState(CellType.MINE);
-			cellsChanged.addd(c);
-			
-		    }//if cell is mine and not flagged
+        for (Cell[] aBoard : board) {
+            for (int j = 0; j < board[0].length; j++) {
+                Cell c = aBoard[j];
+                boolean isMine = aBoard[j].getType() == CellType.MINE;
+                boolean isFlagged = aBoard[j].getState() == CellType.FLAGGED;
+                if (isMine && !isFlagged) {
+                    c.setState(CellType.MINE);
+                    cellsChanged.add(c);
 
-		    if(isFlagged && !isMine){
-			c.setState(CellType.WRONG);
-			cellsChanged.add(c);
+                }//if cell is mine and not flagged
 
-		    }//if cell is flagged and not a mine
+                if (isFlagged && !isMine) {
+                    c.setState(CellType.WRONG);
+                    cellsChanged.add(c);
 
-		}//for j
-		
+                }//if cell is flagged and not a mine
 
-	    }//for i in gameboard
+            }//for j
+
+
+        }//for i in gameboard
 
 	}//if else
 
 	Stage s = new Stage();
-	Vbox container = new VBox(50);
+	VBox container = new VBox(50);
 	container.setAlignment(Pos.CENTER);
-	contaiment.add(message);
+	container.getChildren().add(message);
 	
     }//gameEnded
 
     @Override
     public void updateScene(Scene scene){
 	for(Cell c: cellsChanged){//replaces all the changed cells
-	    for(ImageView img: gPane.getChildren()){
-		if(gpane.getColumnIndex(img) == c.getColumn() &&
-		   gpane.getRowIndex(img) == c.getRow()){
-		    img = c.getState().getImage();
+	    for(Node node : gPane.getChildren()){
+	        if(node instanceof ImageView) {
+                ImageView img = (ImageView) node;
+                if (GridPane.getColumnIndex(img) == c.getColumn() &&
+                        GridPane.getRowIndex(img) == c.getRow()) {
+                    ImageView newImage = new ImageView(c.getState().getImage());
 
-		}//if the image is equal to the column and row of the cell
+                    newImage.setFitWidth(15);
+                    newImage.setFitHeight(15);
+                    newImage.setSmooth(true);
+                    newImage.setPreserveRatio(true);
 
+                    gPane.add(newImage, c.getColumn(), c.getRow());
+                }//if the image is equal to the column and row of the cell
+            }
 	    }//for all imageview in gpane
 
 	}//for each cell in cellsChanged

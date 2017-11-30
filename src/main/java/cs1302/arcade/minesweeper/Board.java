@@ -89,39 +89,42 @@ public class Board {
      *  @param player <code>true</code> if called non-recursively
      */
     public ImageView reveal(int row, int col, boolean player){
-		if(row < 0 || col < 0 || row > board.length - 1
-		   || col > board[0].length || board[row][col].getIsChecked()
-		   || board[row][col].getType().equals(CellType.MINE)
+        if(row < 0 || col < 0 || row > board.length - 1 || col > board[0].length - 1)
+            return null;
+
+        Cell c = board[row][col];
+
+        if(c.getIsChecked()
+		   || c.getType().equals(CellType.MINE)
 		   || !player){
 			return null;
 
 		}//if row, col is out of bounds or if the cell is a mine
 
-		if(board[row][col].getType().equals(CellType.MINE)
-		   && player){
-		    lose(board[row][col]);
+		if(c.getType().equals(CellType.MINE)){
+		    lose(c);
 			return null;
-
 		}//if player initiated and a mine
 
-		board[row][col].check();//reveals current board
+        if(hasWon()) {
+		    win();
+		    return null;
+        }
+
+		c.check();//reveals current board
 
 		int i = surr(row, col);
 		if(i == 0){
-			reveal(row - 1, col - 1, false);
-			reveal(row, col - 1, false);
-			reveal(row + 1, col - 1, false);
-			reveal(row - 1, col, false);
-			reveal(row + 1, col, false);
-			reveal(row - 1, col + 1, false);
-			reveal(row, col + 1, false);
-			reveal(row + 1, col + 1, false);
-
+		    for(int r = row - 1; r <= row + 1; r++) { //loop through surrounding mines
+		        for(int cl = col - 1; cl <= col + 1; cl++) {
+		            reveal(r, cl, true); //reveal them
+                }
+            }
 		}//if no mines surround current spot
 
 		ImageView toReturn = new ImageView();
 
-		toReturn.setImage(board[row][col].reveal().getImage());
+		toReturn.setImage(c.reveal().getImage());
 		toReturn.setPreserveRatio(true);
 		toReturn.setSmooth(true);
 		toReturn.setFitHeight(15);
@@ -135,17 +138,17 @@ public class Board {
      *
      *  @param  c  the Cell that was a mine
      */
-    public void lose(Cell c){
-	c.setState(CellType.HIT);
-	game.addChanged(c);
-	game.gameEnded(false);
+    private void lose(Cell c){
+        c.setState(CellType.HIT);
+        game.addChanged(c);
+        game.gameEnded(false);
     }//lose
 
     /**
      *  Called when player wins the game to terminate game
      */
-    public void win(){
-	game.gameEnded(true)
+    private void win(){
+	    game.gameEnded(true);
     }//win
 
     /**
@@ -153,7 +156,7 @@ public class Board {
      * 
      *  @return <code>true</code>if the player has won
      */
-    public boolean hasWon(){
+    private boolean hasWon(){
 		for (Cell[] aBoard : board) {
 			for (int j = 0; j < board[0].length; j++) {
 				Cell cell = aBoard[j]; //Cell at point
@@ -181,7 +184,7 @@ public class Board {
      *  @return the picture to show the user
      */
     public ImageView flag(int row, int col){
-    	round++;
+    	newRound();
 		return new ImageView(board[row][col].change(true).getImage());
     }//flag
 
@@ -193,7 +196,7 @@ public class Board {
      *  @return the image to show the user
      */
     public ImageView unflag(int row, int col){
-    	round++;
+        newRound();
 		return new ImageView(board[row][col].change(false).getImage());
 	}//unflag
 

@@ -21,3 +21,9 @@ that the Markdown is transformed into nice looking HTML.
    	     and added resources to project
 2. **TODO:** Start and Finish Breakout and MinsweeperGame
 3. **PROB:** Had some trouble with enums
+
+##WED 2017-11-29 @ 8:20 PM EST
+
+1. **DONE:** Finished Minesweeper display and logic. Fixed bugs and syntax errors.
+2. **TODO:** Start and finish Breakout and test.
+3. **PROB:** Trouble with slow internet connection at workplace. Trouble getting end game figured out.
