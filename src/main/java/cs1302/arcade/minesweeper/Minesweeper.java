@@ -18,6 +18,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import cs1302.arcade.Game;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -43,7 +44,7 @@ public class Minesweeper extends Game{
     public Minesweeper(){
 	    super("Minesweeper");
 
-	    gameBoard = new Board(GAME_ROWS, GAME_COLUMNS, this);
+	    gameBoard = new Board(GAME_ROWS, GAME_COLUMNS, this); //Initiate game board
         cellsChanged = new HashSet<>();
     }//Minesweeper
 
@@ -57,20 +58,19 @@ public class Minesweeper extends Game{
         Button newGame = new Button("New Game"); //Button player clicks to start a new game.
         time = new Text(String.format("%03d", timer)); //The time spent playing the game
 
-	//makes keyframe
-	Timeline timeline = new Timeline();
-	KeyFrame keyframe = new KeyFrame(Duration.seconds(1), e -> {
-		Thread t = new Thread(() -> {
-			timer++;
-			Platform.runLater(() -> time.setText(String.format(
-									   "%03d", timer)));
-			
-		    });
-		t.setDaemon(true);
-		t.start();
-	    });
-	timeline.setCycleCount(999);
-	timeline.getKeyFrames().add(keyframe);
+        //makes keyframe
+        Timeline timeline = new Timeline();
+        KeyFrame keyframe = new KeyFrame(Duration.seconds(1), e -> {
+            Thread t = new Thread(() -> {
+                timer++;
+                Platform.runLater(() -> time.setText(String.format("%03d", timer)));  //Display time to player
+
+                });
+            t.setDaemon(true);
+            t.start();
+            });
+        timeline.setCycleCount(999); //Only 999 seconds displayed
+        timeline.getKeyFrames().add(keyframe);
 
 
         newGame.setOnAction(action -> gameBoard = new Board(GAME_ROWS, GAME_COLUMNS, this)); //Reset board for new game
@@ -109,45 +109,52 @@ public class Minesweeper extends Game{
      *
    
      */
-    public void gameEnded(boolean won){
-	Text message = new Text();
-	if(won){
-	    message.setText("Congrats\nYou Won\nScore: " + gameBoard.getScore());
+    void gameEnded(boolean won){
+        Text message = new Text(); //Message to display
+        if(won){
+            message.setText("Congrats\nYou Won\nScore: " + gameBoard.getScore()); //Show win message
 
-	}else{
-	    message.setText("You Lost\nScore: " + gameBoard.getScore());
+        }else{
+            message.setText("You Lost\nScore: " + gameBoard.getScore()); //Show lose message
 
-	    //reveals all the mines in the game
-	    Cell[][] board = gameBoard.getBoard();
-        for (Cell[] aBoard : board) {
-            for (int j = 0; j < board[0].length; j++) {
-                Cell c = aBoard[j];
-                boolean isMine = aBoard[j].getType() == CellType.MINE;
-                boolean isFlagged = aBoard[j].getState() == CellType.FLAGGED;
-                if (isMine && !isFlagged) {
-                    c.setState(CellType.MINE);
-                    cellsChanged.add(c);
+            //reveals all the mines in the game
+            Cell[][] board = gameBoard.getBoard(); //get game board
+            for (Cell[] aBoard : board) { //Loop through board
+                for (int j = 0; j < board[0].length; j++) {
+                    Cell c = aBoard[j]; //The cell
+                    boolean isMine = aBoard[j].getType() == CellType.MINE; //Cell is mine
+                    boolean isFlagged = aBoard[j].getState() == CellType.FLAGGED; //Cell is flagged
 
-                }//if cell is mine and not flagged
+                    if (isMine && !isFlagged) { //Mine and not flagged, show to player
+                        c.setState(CellType.MINE);
+                        cellsChanged.add(c);
 
-                if (isFlagged && !isMine) {
-                    c.setState(CellType.WRONG);
-                    cellsChanged.add(c);
+                    }//if cell is mine and not flagged
 
-                }//if cell is flagged and not a mine
+                    if (isFlagged && !isMine) { //flagged and not a mine, tell player they got it wrong
+                        c.setState(CellType.WRONG);
+                        cellsChanged.add(c);
 
-            }//for j
+                    }//if cell is flagged and not a mine
+
+                }//for j
 
 
-        }//for i in gameboard
+            }//for i in gameboard
 
-	}//if else
+        }//if else
 
-	Stage s = new Stage();
-	VBox container = new VBox(50);
-	container.setAlignment(Pos.CENTER);
-	container.getChildren().add(message);
-	
+        Stage s = new Stage(); //Create new stage do display win
+        VBox container = new VBox(50); //Parent container
+        Scene scene = new Scene(container); //Scene to show
+
+        container.setAlignment(Pos.CENTER);
+        container.getChildren().add(message);
+
+        s.setScene(scene); //set the scene
+        s.initModality(Modality.APPLICATION_MODAL);
+        s.sizeToScene(); //size it
+        s.showAndWait(); //show
     }//gameEnded
 
     @Override
@@ -206,7 +213,7 @@ public class Minesweeper extends Game{
      *
      *  @param c the Cell to be added to cellsChanged
      */
-    public void addChanged(Cell c){
+    void addChanged(Cell c){
 	cellsChanged.add(c);
 
     }//addChanged

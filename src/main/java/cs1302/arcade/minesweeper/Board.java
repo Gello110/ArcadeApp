@@ -3,7 +3,6 @@ package cs1302.arcade.minesweeper;
 import java.util.Random;
 import javafx.scene.image.ImageView;
 import java.util.ArrayList;
-import javafx.scene.image.Image;
 
 /**
  *  Class that represents a board of cells for minesweeper
@@ -48,7 +47,7 @@ public class Board {
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < board[0].length; j++){
 				if(!board[i][j].reveal().equals(CellType.MINE)){
-					board[i][j].surr(surr(i, j));
+					board[i][j].surr(getSurroundedBy(i, j));
 				}//if cell at i j is not a mine
 			}//for j
 		}//for i
@@ -63,7 +62,7 @@ public class Board {
      *  @param col the column of the cell to be analysed
      *  @return the number of mines surrounding the cell, 1-8
      */
-    private int surr(int row, int col){
+    private int getSurroundedBy(int row, int col){
 		int count = 0;
 
 		for(int i = row - 1; i < row + 2; i++){
@@ -71,14 +70,13 @@ public class Board {
 				if(-1 < i && i  < board.length - 1 && -1 < j && j< board[0].length - 1){
 					if(board[i][j].getType().equals(CellType.MINE)){
 						count++;
-
 					}//if
 				}//if
 			}//for j
 		}//for i
 
 		return count;
-    }//surr
+    }//getSurroundedBy
 
     /**
      *  Reveals the contents of the cell at row, col
@@ -113,7 +111,7 @@ public class Board {
 
 		c.check();//reveals current board
 
-		int i = surr(row, col);
+		int i = getSurroundedBy(row, col);
 		if(i == 0){
 		    for(int r = row - 1; r <= row + 1; r++) { //loop through surrounding mines
 		        for(int cl = col - 1; cl <= col + 1; cl++) {

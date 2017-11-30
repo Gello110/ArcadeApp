@@ -18,7 +18,7 @@ public enum CellType{
 	SIX(6, "minesweeper_6.jpg"),
 	SEVEN(7, "minesweeper_7.jpg"),
 	EIGHT(8, "minesweeper_8.jpg"),
-        WRONG(9, "minesweeper_wrong_flag.jpg"),
+	WRONG(9, "minesweeper_wrong_flag.jpg"),
 	HIT(10, "minesweeper_bomb_hit.jpg");
 
     private int type;
@@ -30,20 +30,18 @@ public enum CellType{
      *  @param type  The type of the cell
      *  @param url  The string that holds the file location
      */
-    private CellType(int type, String url){
-	this.type = type;
-	this.pic = new Image(url);
-
+    CellType(int type, String url){
+		this.type = type;
+		this.pic = new Image(url);
     }//CellType
 
     /**
      *  returns the type of cell it is
-     * 
-     *  @return the type of cell 
+     *
+     *  @return the type of cell
      */
     public int getType(){
-	return type;
-
+		return type;
     }//
 
     /**
@@ -52,8 +50,14 @@ public enum CellType{
      *  @return the image that represents the cell
      */
     public Image getImage(){
-	return pic;
+		return pic;
+    }//getImage
 
-    }//
+	public static CellType getTypeByNumber(int number) {
+    	for(CellType type : values())
+    		if(type.getType() == number)
+    			return type;
 
+    	return CellType.UNPRESSED;
+	}
 }//CellType

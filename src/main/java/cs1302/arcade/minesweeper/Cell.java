@@ -1,7 +1,5 @@
 package cs1302.arcade.minesweeper;
 
-import javafx.scene.image.Image;
-
 /**
  *  Represents a cell on the minesweeper board
  */
@@ -26,8 +24,7 @@ public class Cell{
      *  sets a mine at the cell
      */
     public void setMine(){
-	type = CellType.MINE;
-
+		type = CellType.MINE;
     }//setMine
 
     /**
@@ -37,37 +34,7 @@ public class Cell{
      *  @param  i  The number of mines surrounding cell
      */
     public void surr(int i){
-	switch(i){
-	    case 0:
-		type = CellType.EMPTY;
-		break;
-	    case 1:
-		type = CellType.ONE;
-		break;
-	    case 2:
-		type = CellType.TWO;
-		break;
-	    case 3:
-		type = CellType.THREE;
-		break;
-	    case 4:
-		type = CellType.FOUR;
-		break;
-	    case 5:
-		type = CellType.FIVE;
-		break;
-	    case 6:
-		type = CellType.SIX;
-		break;
-	    case 7:
-		type = CellType.SEVEN;
-		break;
-	    case 8:
-		type = CellType.EIGHT;
-		break;
-
-	}//switch i
-
+    	type = CellType.getTypeByNumber(i); //Get CellType by number
     }//surr
 
     /**
@@ -76,9 +43,8 @@ public class Cell{
      *  @return The CellType of the cell
      */
     public CellType reveal(){
-	state = type;
-	return type;
-
+		state = type;
+		return type;
     }//getState
 
     /**
@@ -87,28 +53,26 @@ public class Cell{
      *  @param flagging <code>true</code> if flagging, <code>false</code> if unflagging
      */
     public CellType change(boolean flagging){
-	if(state.equals(CellType.MINE)){
-	    return state;
-		
-	}//if cell is mine
+		if(state.equals(CellType.MINE)){
+			return state;
 
-	if(flagging){
-	    state = CellType.FLAGGED;
+		}//if cell is mine
 
-	}else{
-	    state = CellType.UNPRESSED;
+		if(flagging){
+			state = CellType.FLAGGED;
 
-	}//if flagging or unflagging mine
-	return state;
+		}else{
+			state = CellType.UNPRESSED;
 
+		}//if flagging or unflagging mine
+		return state;
     }//change
 
     /**
      *  sets isChecked to true
      */
     public void check(){
-	isChecked = true;
-
+		isChecked = true;
     }//check
 
     /**
@@ -117,8 +81,7 @@ public class Cell{
      *  @return the state of they cell represented by CellType
      */
     public CellType getState(){
-	return state;
-
+		return state;
     }//get state
 
     /**
@@ -127,8 +90,7 @@ public class Cell{
      *  @returns <code>true</code>if has been looked at
      */
     public boolean getIsChecked(){
-	return isChecked;
-
+		return isChecked;
     }//getIsChecked
 
     /**
@@ -137,8 +99,7 @@ public class Cell{
      *  @return the type of the cell represented by CellType
      */
     public CellType getType(){
-	return type;
-	
+		return type;
     }//getType
 
 
@@ -148,8 +109,7 @@ public class Cell{
      *  @param state the CellType the cell is to be set
      */
     public void setState(CellType state){
-	this.state = state;
-
+		this.state = state;
     }//setState
 
 	/**
