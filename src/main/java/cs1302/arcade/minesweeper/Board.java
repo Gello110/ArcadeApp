@@ -12,14 +12,16 @@ public class Board {
     private int round;
     private Cell[][] board;
 	private int mines;
-
+    private Minesweeper game;
+    
     /**
      *  Constructs a Board for minesweeper
 	 *
 	 *  @param rows The number of rows in the board
 	 *  @param cols The number of cols in the board
      */
-    public Board(int rows, int cols){
+    public Board(int rows, int cols, Minesweeper game){
+	this.game = game;
 		board = new Cell[rows][cols];
 		round = 0;
 		mines = 40;
@@ -50,6 +52,7 @@ public class Board {
 				}//if cell at i j is not a mine
 			}//for j
 		}//for i
+
     }//Board
 
     /**
@@ -94,7 +97,7 @@ public class Board {
 
 		if(board[row][col].getType().equals(CellType.MINE)
 		   && player){
-			lose();
+		    lose(board[row][col]);
 			return null;
 
 		}//if player initiated and a mine
@@ -119,16 +122,20 @@ public class Board {
 
     /**
      *  Called when player reveals a mine and loses the game
+     *
+     *  @param  c  the Cell that was a mine
      */
-    public void lose(){
-		System.out.println("YoU LoSe, LoOoOoOoSeRrRrR");
+    public void lose(Cell c){
+	c.setState(CellType.HIT);
+	game.addChanged(c);
+	game.gameEnded(false);
     }//lose
 
     /**
      *  Called when player wins the game to terminate game
      */
     public void win(){
-		System.out.println("I mean I guess you won....");
+	game.gameEnded(true)
     }//win
 
     /**

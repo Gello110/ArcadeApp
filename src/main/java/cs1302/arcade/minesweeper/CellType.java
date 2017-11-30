@@ -11,14 +11,16 @@ public enum CellType{
 	EMPTY(0, "minesweeper_pressed.jpg"),
 	MINE(-1, "minesweeper_bomb.jpg"),
 	ONE(1, "minesweeper_1.jpg"),
-	TWO(2, "minesweeper_2.jpg"),
+	TWO(2, "minesweeper_2.png"),
 	THREE(3, "minesweeper_3.jpg"),
 	FOUR(4, "minesweeper_4.jpg"),
 	FIVE(5, "minesweeper_5.jpg"),
 	SIX(6, "minesweeper_6.jpg"),
 	SEVEN(7, "minesweeper_7.jpg"),
-	EIGHT(8, "minesweeper_8.jpg");
-	
+	EIGHT(8, "minesweeper_8.jpg"),
+        WRONG(9, "minesweeper_wrong_flag.jpg"),
+	HIT(10, "minesweeper_bomb_hit.jpg");
+
     private int type;
     private Image pic;
 

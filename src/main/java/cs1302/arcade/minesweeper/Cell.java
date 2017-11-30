@@ -141,6 +141,17 @@ public class Cell{
 	
     }//getType
 
+
+    /**
+     *  Sets the cell state to the given state
+     *
+     *  @param state the CellType the cell is to be set
+     */
+    public void setState(CellType state){
+	this.state = state;
+
+    }//setState
+
 	/**
 	 * Get the row this cell is located on
 	 *
