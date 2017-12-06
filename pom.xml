@@ -22,15 +22,6 @@
     </dependency>
   </dependencies>
   <build>
-    <resources>
-      <resource>
-	<directory>src/main/java/cs1302/arcade/resources</directory>
-	<includes>
-	  <include>*.png</include>
-	  <include>*.jpg</include>
-	</includes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

@@ -32,7 +32,7 @@ public enum CellType{
      */
     CellType(int type, String url){
 		this.type = type;
-		this.pic = new Image(url);
+		this.pic = new Image(getClass().getClassLoader().getResource(url).toString());
     }//CellType
 
     /**

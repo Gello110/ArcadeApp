@@ -24,7 +24,7 @@ public class StartScene extends Scene {
 
 		StackPane parent = (StackPane) getRoot(); //The parent of the scene graph
 		ImageView imageView = new ImageView(); //The image view containing the background
-		Image background = new Image(getClass().getResource("Arcade-Background.jpg").toString()); //Load in the background
+		Image background = new Image(getClass().getClassLoader().getResource("Arcade-Background.jpg").toString()); //Load in the background
 
 		imageView.setImage(background); //Set the image to the ImageView
 		imageView.setPreserveRatio(true); //Preserve image quality
@@ -43,12 +43,12 @@ public class StartScene extends Scene {
 		Text text = new Text(); //Create text
 		text.setText("ARCADE"); //ARCADE Text
 		text.setFill(Color.STEELBLUE); //Set color
-		text.setFont(Font.font(null, FontWeight.BOLD, 60)); //Set font
+		text.setFont(Font.font(null, FontWeight.BOLD, 1)); //Set font
 		text.setEffect(lighting); //Set effect
 
 		ScaleTransition transition = new ScaleTransition(Duration.millis(2000), text); //Create ScaleTransition with a duration of 2 seconds and the text object
 
-		transition.setCycleCount(Animation.INDEFINITE); //Cycle indefinite amount of times
+		transition.setCycleCount(1); //Cycle indefinite amount of times
 		transition.setByX(1.5f); //Amount to increase x and y by
 		transition.setByY(1.5f);
 		transition.setFromX(10); //From x and y
@@ -58,7 +58,7 @@ public class StartScene extends Scene {
 
 		transition.play(); //Play animation
 
-		parent.setPrefSize(600, 400); //Set size
+//		parent.setPrefSize(600, 400); //Set size
 		parent.getChildren().addAll(imageView, text); //Set children
     }
 }

@@ -2,11 +2,15 @@ package cs1302.arcade;
 
 import cs1302.arcade.breakout.Breakout;
 import cs1302.arcade.minesweeper.Minesweeper;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 /**
  * Class used to provide the user with a window to choose the game
@@ -35,32 +39,31 @@ public class GameChoiceScene extends Scene {
      */
     private void init() {
 		ImageView backgroundView = new ImageView(); //The background
-    	Image background = new Image(getClass().getResource("Arcade-Background.jpg").toString()); //Load in the background
+    	Image background = new Image(getClass().getClassLoader().getResource("Arcade-Background.jpg").toString()); //Load in the background
 	
 		setImage(backgroundView, background, 600, 400); //Set the background image to the parent ImageView with size 600 x 400
 
-		BorderPane pane = new BorderPane(); //To hold the selectors
-		Image minesweeper = new Image(getClass().getResource("Minesweeper.png").toString()); //Load in the Minesweeper game image
+		HBox pane = new HBox(); //To hold the selectors
+		Image minesweeper = new Image(getClass().getClassLoader().getResource("Minesweeper.png").toString()); //Load in the Minesweeper game image
 		ImageView msSelector = new ImageView(); //Create the ImageView object that will display the Minesweeper game choice
 
-		setImage(msSelector, minesweeper, 100, 200); //Set the minesweeper image to the Minesweeper selector ImageView with size 100 x 200
+		setImage(msSelector, minesweeper, 200, 400); //Set the minesweeper image to the Minesweeper selector ImageView with size 100 x 200
 
-		msSelector.setX(100); //Set image location
-		msSelector.setY(100);
 		msSelector.setOnMouseClicked(event -> mainClass.setCurrentGame(new Minesweeper())); //On click open MineSweeper
 
-		Image breakout = new Image(getClass().getResource("Breakout.png").toString()); //Load in the Breakout game image
+		Image breakout = new Image(getClass().getClassLoader().getResource("Breakout.png").toString()); //Load in the Breakout game image
 		ImageView bSelector = new ImageView(); //Create the ImageView object that will display the Breakout game choice
 
-		setImage(bSelector, breakout, 100, 200); //Set the breakout image to the breakout selector ImageView with size 100 x 200
+		setImage(bSelector, breakout, 200, 600); //Set the breakout image to the breakout selector ImageView with size 100 x 200
 
-		bSelector.setX(300); //Set image location
-		bSelector.setY(100);
 		bSelector.setOnMouseClicked(event -> mainClass.setCurrentGame(new Breakout())); //On click open breakout
 
-		pane.setLeft(msSelector); //Set locations
-		pane.setCenter(bSelector);
+		pane.setPadding(new Insets(20, 20, 20, 20));
+		pane.setSpacing(40);
+		pane.setAlignment(Pos.CENTER);
+		parent.setAlignment(Pos.CENTER);
 
+		pane.getChildren().addAll(msSelector, bSelector);
 		parent.getChildren().addAll(backgroundView, pane); //Add children to parent
     }
 

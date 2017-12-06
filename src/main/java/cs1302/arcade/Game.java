@@ -14,9 +14,6 @@ public abstract class Game {
      */
     public Game(String name) {
 	    this.name = name; // Set game name
-
-        initScene(); //Init scene
-        initGame(); //begin game
     }
 
     /**
@@ -39,13 +36,6 @@ public abstract class Game {
      * @return If game is over
      */
     public abstract boolean isOver();
-
-    /**
-     * Initializes the game. Calls all updates to the scene graph.
-     */
-    private void initGame() {
-	//TODO Set up KeyFrame and Timeline for Scene
-    }
     
     /**
      * Gets the current score of the game.
