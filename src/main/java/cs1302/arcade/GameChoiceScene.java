@@ -49,7 +49,7 @@ public class GameChoiceScene extends Scene {
 
 		setImage(msSelector, minesweeper, 200, 400); //Set the minesweeper image to the Minesweeper selector ImageView with size 100 x 200
 
-		msSelector.setOnMouseClicked(event -> mainClass.setCurrentGame(new Minesweeper())); //On click open MineSweeper
+		msSelector.setOnMouseClicked(event -> mainClass.setCurrentGame(new Minesweeper(mainClass))); //On click open MineSweeper
 
 		Image breakout = new Image(getClass().getClassLoader().getResource("Breakout.png").toString()); //Load in the Breakout game image
 		ImageView bSelector = new ImageView(); //Create the ImageView object that will display the Breakout game choice

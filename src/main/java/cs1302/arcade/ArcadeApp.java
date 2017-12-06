@@ -4,6 +4,7 @@ package cs1302.arcade;
 import java.time.LocalTime;
 import java.util.Random;
 
+import com.oracle.deploy.update.UpdateCheck;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -64,6 +65,7 @@ public class ArcadeApp extends Application {
         Timeline timeline = new Timeline();
         EventHandler<ActionEvent> handler = event -> {
             if(game.isOver()) {
+                game.updateScene(scene);
                 timeline.stop();
                 return;
             }

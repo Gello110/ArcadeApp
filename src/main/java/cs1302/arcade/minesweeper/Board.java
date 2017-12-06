@@ -12,6 +12,7 @@ public class Board {
     private Cell[][] board;
 	private int mines;
     private Minesweeper game;
+    private boolean over;
     
     /**
      *  Constructs a Board for minesweeper
@@ -20,11 +21,12 @@ public class Board {
 	 *  @param cols The number of cols in the board
      */
     public Board(int rows, int cols, Minesweeper game){
-	this.game = game;
+		this.game = game;
 		board = new Cell[rows][cols];
 		round = 0;
 		mines = 40;
 		ArrayList<Cell> unmined = new ArrayList<>();
+		over = false;
 
 
 		for(int i = 0; i < board.length; i++){
@@ -39,7 +41,7 @@ public class Board {
 			Random r = new Random();
 			int j = r.nextInt(unmined.size());
 
-			unmined.get(r.nextInt(j)).setMine();
+			unmined.get(j).setMine();
 			unmined.remove(j);
 		}//for i
 
@@ -68,7 +70,7 @@ public class Board {
 		for(int i = row - 1; i < row + 2; i++){
 			for(int j = col - 1; j < col + 2; j++){
 				if(-1 < i && i  < board.length - 1 && -1 < j && j< board[0].length - 1){
-					if(board[i][j].getType() != null && board[i][j].equals(CellType.MINE)){
+					if(board[i][j].getType() != null && board[i][j].getType().equals(CellType.MINE)){
 						count++;
 					}//if
 				}//if
@@ -94,7 +96,7 @@ public class Board {
 
         if(c.getIsChecked()
 		   || c.getType().equals(CellType.MINE)
-		   || !player){
+		   && !player){
 			return null;
 
 		}//if row, col is out of bounds or if the cell is a mine
@@ -104,29 +106,34 @@ public class Board {
 			return null;
 		}//if player initiated and a mine
 
-        if(hasWon()) {
-		    win();
-		    return null;
-        }
-
 		c.check();//reveals current board
 
-		int i = getSurroundedBy(row, col);
-		if(i == 0){
+		if(!player) {
+			game.addChanged(c);
+		}
+
+		if(c.getType().equals(CellType.EMPTY)){
 		    for(int r = row - 1; r <= row + 1; r++) { //loop through surrounding mines
 		        for(int cl = col - 1; cl <= col + 1; cl++) {
-		            reveal(r, cl, true); //reveal them
+		            reveal(r, cl, false); //reveal them
                 }
             }
 		}//if no mines surround current spot
+
 
 		ImageView toReturn = new ImageView();
 
 		toReturn.setImage(c.reveal().getImage());
 		toReturn.setPreserveRatio(true);
 		toReturn.setSmooth(true);
-		toReturn.setFitHeight(15);
-		toReturn.setFitWidth(15);
+		toReturn.setFitHeight(30);
+		toReturn.setFitWidth(30);
+
+		if(hasWon()){
+			c.setState(c.getType());
+			game.addChanged(c);
+			win();
+		}
 
 		return toReturn;
     }//reveal
@@ -137,6 +144,7 @@ public class Board {
      *  @param  c  the Cell that was a mine
      */
     private void lose(Cell c){
+    	over = true;
         c.setState(CellType.HIT);
         game.addChanged(c);
         game.gameEnded(false);
@@ -146,7 +154,7 @@ public class Board {
      *  Called when player wins the game to terminate game
      */
     private void win(){
-	    game.gameEnded(true);
+		game.gameEnded(true);
     }//win
 
     /**
@@ -254,4 +262,14 @@ public class Board {
 	public Cell[][] getBoard() {
 		return board;
 	}
+
+	/**
+	 * Gets the over boolean telling if the game has ended
+	 *
+	 * @return <code>true</code> if game has ended
+	 */
+	public boolean getOver() {
+		return over;
+	}//get over
+
 }//Board
