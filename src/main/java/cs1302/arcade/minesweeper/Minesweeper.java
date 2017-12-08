@@ -7,7 +7,6 @@ import cs1302.arcade.ArcadeApp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
@@ -39,6 +38,7 @@ public class Minesweeper extends Game{
     private GridPane gPane;//GridPane containing th cells of the game
     private int timer;//Seconds since game has started
     private ArcadeApp app;
+    Timeline timing;//timer for the game
 
     private Set<Cell> cellsChanged; //Set containing the cells changed since the last update of the screen
 
@@ -67,14 +67,14 @@ public class Minesweeper extends Game{
         time.setFont(Font.loadFont( getClass().getClassLoader().getResource("digital.ttf").toString(), 30));
 
         //makes keyframe
-        Timeline timeline = new Timeline();
+        timing = new Timeline();
         KeyFrame keyframe = new KeyFrame(Duration.seconds(1), e -> {
             timer++;
             Platform.runLater(() -> time.setText(String.format("%03d", timer)));  //Display time to player
         });
-        timeline.setCycleCount(999); //Only 999 seconds displayed
-        timeline.getKeyFrames().add(keyframe);
-        timeline.play();
+        timing.setCycleCount(999); //Only 999 seconds displayed
+        timing.getKeyFrames().add(keyframe);
+        timing.play();
 
 
         newGame.setOnAction(action -> {
@@ -116,6 +116,7 @@ public class Minesweeper extends Game{
    
      */
     void gameEnded(boolean won){
+        timing.stop();
         Text message = new Text(); //Message to display
         if(won){
             message.setText("Congrats\nYou Won\nScore: " + gameBoard.getScore()); //Show win message
@@ -205,7 +206,13 @@ public class Minesweeper extends Game{
         if(action.getButton() == MouseButton.PRIMARY) { //Left Click
             gameBoard.reveal(cell.getRow(), cell.getColumn(), true); //reveal the cell
         } else { //Right Click
-            gameBoard.flag(cell.getRow(), cell.getColumn()); //flag the cell
+            System.out.println(cell.getState() == CellType.FLAGGED);
+            if(cell.getState() == CellType.FLAGGED){
+                gameBoard.unflag(cell.getRow(), cell.getColumn()); //unflag the cell
+            }else if(cell.getState() == CellType.UNPRESSED) {
+                gameBoard.flag(cell.getRow(), cell.getColumn()); //flag the cell
+                minesLeft.setText(String.format("%03d", gameBoard.getMinesLeft()));
+            }
         }
 
         cellsChanged.add(cell);

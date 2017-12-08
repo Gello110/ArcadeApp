@@ -56,7 +56,7 @@ public class GameChoiceScene extends Scene {
 
 		setImage(bSelector, breakout, 200, 600); //Set the breakout image to the breakout selector ImageView with size 100 x 200
 
-		bSelector.setOnMouseClicked(event -> mainClass.setCurrentGame(new Breakout())); //On click open breakout
+		bSelector.setOnMouseClicked(event -> mainClass.setCurrentGame(new Breakout(mainClass))); //On click open breakout
 
 		pane.setPadding(new Insets(20, 20, 20, 20));
 		pane.setSpacing(40);

@@ -1,23 +1,18 @@
 
 package cs1302.arcade;
 
-import java.time.LocalTime;
-import java.util.Random;
-
-import com.oracle.deploy.update.UpdateCheck;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Application for the arcade, contains main method
+ */
 public class ArcadeApp extends Application {
 
     Stage stage;
@@ -33,7 +28,7 @@ public class ArcadeApp extends Application {
 
         Timeline timeline = new Timeline(); //Construct timeline
         timeline.setCycleCount(1);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(3000), event -> setCurrentScene(new GameChoiceScene(this)))); //Display game choice scene three seconds later
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(2500), event -> setCurrentScene(new GameChoiceScene(this)))); //Display game choice scene three seconds later
         timeline.play();
     } // start
 
@@ -72,14 +67,18 @@ public class ArcadeApp extends Application {
 
             game.updateScene(scene);
         };
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(50), handler);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(17), handler);
 
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
 
-
+    /**
+     *  Entryway into program that launches the application
+     *
+     * @param args arguments from initiaion
+     */
     public static void main(String[] args) {
         try {
             Application.launch(args);

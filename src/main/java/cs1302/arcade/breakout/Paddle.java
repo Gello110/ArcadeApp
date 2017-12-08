@@ -1,0 +1,96 @@
+package cs1302.arcade.breakout;
+
+
+import javafx.scene.shape.Rectangle;
+
+/**
+ * represents a paddle that the player interacts with
+ */
+public class Paddle{
+    private int width;
+    private int height;
+    private int x;
+    private int y;
+    private Rectangle paddle;
+    private Breakout game;
+
+    /**
+     *  Makes a new paddle object
+     *
+     * @param width  width of the paddle
+     * @param height  height of the paddle
+     * @param game  the breakout game
+     */
+    public Paddle(int width, int height, Breakout game){
+        this.game = game;
+        this.height = height;
+        this.width = width;
+    }//Paddle
+
+    /**
+     *  Makes a rectangle to represent the paddle to be rendered
+     *
+     * @param x  x coordinate of the paddle to be rendered
+     * @param y  y coordinate of the paddle to be rendered
+     * @return  the rectangle representing the paddle
+     */
+    public Rectangle render(int x, int y){
+        if(paddle == null) {//makes a paddle if no paddle exists
+            this.x = x;
+            this.y = y;
+            paddle = new Rectangle(x, y, width, height);
+        }else{//changes the position of the paddle if paddle already exists
+            if(this.x + x > 0 && this.x + x + width <= game.getWidth()) {//checks if paddle is already at edge
+                this.x += x;
+                paddle.setX(this.x);
+            }
+        }
+
+        return paddle;
+    }//render
+
+    /**
+     * returns the x position of the paddle
+     *
+     * @return the x position of the paddle
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * returns the y position of the paddle
+     *
+     * @return the y position of the paddle
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * returns the height of the paddle
+     *
+     * @return the height of the paddle
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * returns the width of the paddle
+     *
+     * @return the width of the paddle
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * returns the rectangle representing the block
+     *
+     * @return the rectangle representing the block
+     */
+    public Rectangle getPaddle() {
+        return paddle;
+    }
+}//Paddle

@@ -53,8 +53,8 @@ public class StartScene extends Scene {
 		transition.setByY(1.5f);
 		transition.setFromX(10); //From x and y
 		transition.setFromY(10);
-		transition.setToX(200); //To x and y
-		transition.setToY(200);
+		transition.setToX(150); //To x and y
+		transition.setToY(150);
 
 		transition.play(); //Play animation
 

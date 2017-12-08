@@ -26,4 +26,6 @@ that the Markdown is transformed into nice looking HTML.
 
 1. **DONE:** Finished Minesweeper display and logic. Fixed bugs and syntax errors.
 2. **TODO:** Start and finish Breakout and test.
-3. **PROB:** Trouble with slow internet connection at workplace. Trouble getting end game figured out.
+3. **PROB:** Trouble with slow internet connection at workplace.
+
+## WED 2017-11-

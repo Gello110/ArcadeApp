@@ -88,7 +88,7 @@ public class Board {
      *  @return the picture to show to the user
      *  @param player <code>true</code> if called non-recursively
      */
-    public ImageView reveal(int row, int col, boolean player){
+    ImageView reveal(int row, int col, boolean player){
         if(row < 0 || col < 0 || row > board.length - 1 || col > board[0].length - 1)
             return null;
 
@@ -178,7 +178,7 @@ public class Board {
     /**
      *  increments round
      */
-    public void newRound(){
+    private void newRound(){
 		round++;
     }//newRound
     
@@ -189,7 +189,7 @@ public class Board {
      *  @param col the column of the cell to be flagged
      *  @return the picture to show the user
      */
-    public ImageView flag(int row, int col){
+     ImageView flag(int row, int col){
     	newRound();
 		return new ImageView(board[row][col].change(true).getImage());
     }//flag
@@ -211,7 +211,7 @@ public class Board {
 	 *
 	 *  @return the score for the round
 	 */
-	public int getScore(){
+	int getScore(){
 		if(round >= 216){
 			return 0;
 		}

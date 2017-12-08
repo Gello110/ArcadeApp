@@ -2,6 +2,9 @@ package cs1302.arcade;
 
 import javafx.scene.Scene;
 
+/**
+ * Class that represents Games in the arcade, all games extend this class
+ */
 public abstract class Game {
 
     private String name;
@@ -43,7 +46,7 @@ public abstract class Game {
      * @return The score of the game.
      */
     public int getScore() {
-	return this.score;
+	    return this.score;
     }
 
     /**
