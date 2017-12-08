@@ -4,10 +4,12 @@ import java.util.Set;
 import java.util.HashSet;
 
 import cs1302.arcade.ArcadeApp;
+import cs1302.arcade.GameChoiceScene;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -65,6 +67,11 @@ public class Minesweeper extends Game{
         Button newGame = new Button("New Game"); //Button player clicks to start a new game.
         time = new Text(String.format("%03d", timer)); //The time spent playing the game
         time.setFont(Font.loadFont( getClass().getClassLoader().getResource("digital.ttf").toString(), 30));
+        Button change = new Button("Switch Game");
+        change.setOnAction(e -> app.setCurrentScene(new GameChoiceScene(app)));
+        HBox buttons = new HBox(20);
+        buttons.getChildren().addAll(newGame, change);
+        buttons.setAlignment(Pos.CENTER);
 
         //makes keyframe
         timing = new Timeline();
@@ -82,11 +89,11 @@ public class Minesweeper extends Game{
            }); //Reset board for new game
 
         bPane.setRight(minesLeft); //Set position
-        bPane.setCenter(newGame);
+        bPane.setCenter(buttons);
         bPane.setLeft(time);
 
         BorderPane.setAlignment(minesLeft, Pos.CENTER_LEFT); //Set alignment
-        BorderPane.setAlignment(newGame, Pos.CENTER);
+        BorderPane.setAlignment(buttons, Pos.CENTER);
         BorderPane.setAlignment(time, Pos.CENTER_RIGHT);
 
         gPane = new GridPane(); //Will contain the grid of tiles the player interacts with
