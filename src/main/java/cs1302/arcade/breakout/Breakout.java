@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -285,11 +286,16 @@ public class Breakout extends Game{
             message.setText("You Lost\nScore: " + getScore()); //Show lose messages
         }//if else
 
+        message.setFont(new Font(40)); //Make the font larger
+
         Stage s = new Stage(); //Create new stage do display win
         VBox container = new VBox(50); //Parent container
         Scene scene = new Scene(container); //Scene to show
 
+        message.setTextAlignment(TextAlignment.CENTER); //Set alighment
         container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(20)); //Set padding
+
         container.getChildren().add(message);
 
         s.setScene(scene); //set the scene

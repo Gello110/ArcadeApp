@@ -8,6 +8,7 @@ import cs1302.arcade.GameChoiceScene;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,6 +22,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import cs1302.arcade.Game;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -155,11 +157,16 @@ public class Minesweeper extends Game{
             }//for i in gameboard
         }//if else
 
+        message.setFont(new Font(40)); //Make the font larger
+
         Stage s = new Stage(); //Create new stage do display win
         VBox container = new VBox(50); //Parent container
         Scene scene = new Scene(container); //Scene to show
 
+        message.setTextAlignment(TextAlignment.CENTER); //Set alighment
         container.setAlignment(Pos.CENTER);
+        container.setPadding(new Insets(20)); //Set padding
+
         container.getChildren().add(message);
 
         s.setScene(scene); //set the scene
