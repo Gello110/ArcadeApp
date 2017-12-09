@@ -122,13 +122,12 @@ public class Minesweeper extends Game{
      *
    
      */
-    void gameEnded(boolean won){
+    void endGame(boolean won){
         timing.stop();
         Text message = new Text(); //Message to display
+
         if(won){
             message.setText("Congrats\nYou Won\nScore: " + gameBoard.getScore()); //Show win message
-
-
         }else{
             message.setText("You Lost\nScore: " + gameBoard.getScore()); //Show lose message
 
@@ -146,20 +145,14 @@ public class Minesweeper extends Game{
                     if (isMine && !isFlagged) { //Mine and not flagged, show to player
                         c.setState(CellType.MINE);
                         cellsChanged.add(c);
-
                     }//if cell is mine and not flagged
 
                     if (isFlagged && !isMine) { //flagged and not a mine, tell player they got it wrong
                         c.setState(CellType.WRONG);
                         cellsChanged.add(c);
-
                     }//if cell is flagged and not a mine
-
                 }//for j
-
-
             }//for i in gameboard
-
         }//if else
 
         Stage s = new Stage(); //Create new stage do display win
@@ -173,7 +166,7 @@ public class Minesweeper extends Game{
         s.initModality(Modality.APPLICATION_MODAL);
         s.sizeToScene(); //size it
         s.showAndWait(); //show
-    }//gameEnded
+    }//endGame
 
     @Override
     public void updateScene(Scene scene){

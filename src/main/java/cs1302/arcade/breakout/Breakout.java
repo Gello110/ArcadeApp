@@ -1,19 +1,24 @@
 package cs1302.arcade.breakout;
 
 import cs1302.arcade.ArcadeApp;
-import cs1302.arcade.GameChoiceScene;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import cs1302.arcade.Game;
+import cs1302.arcade.GameChoiceScene;
+import cs1302.arcade.minesweeper.Cell;
+import cs1302.arcade.minesweeper.CellType;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.util.HashSet;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  *  Class representing a breakout game
@@ -29,15 +34,16 @@ public class Breakout extends Game{
     private int level;
     private int lives;
     private int speed;
+    private int blocksDestroyed;
     private BallDir dir;//trajectory of the ball
     private Pane pane;
     private Text life;
+    private boolean ended;
 
     /**
      *  Constructs a breakout game
      */
     public Breakout(ArcadeApp app){
-
         super("Breakout");
 
         level = 1;
@@ -64,12 +70,14 @@ public class Breakout extends Game{
 
 
         //creates the score and level to be shown to player
+        Font font = Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toString(), 35);
         Text score = new Text(String.format("%04d", getScore()));
-        score.setFont(Font.loadFont( getClass().getClassLoader().getResource("digital.ttf").toString(), 35));
+        score.setFont(font);
         Text currLevel = new Text(String.format("%02d", level));
-        currLevel.setFont(Font.loadFont( getClass().getClassLoader().getResource("digital.ttf").toString(), 35));
+        currLevel.setFont(font);
         life = new Text(String.format("%01d", lives));
-        life.setFont(Font.loadFont( getClass().getClassLoader().getResource("digital.ttf").toString(), 35));
+        life.setFont(font);
+
         stats.setCenter(life);
         stats.setLeft(currLevel);
         stats.setRight(score);
@@ -132,16 +140,29 @@ public class Breakout extends Game{
 
     @Override
     public void updateScene(Scene scene){
+        if(ended) return;
+
         //checks if ball has hit sides of window
         hitLeft();
         hitRight();
         hitUp();
         hitBottom();
 
+        boolean hit = false;
         //checks of ball had hit any blocks
         for(Block[] row: blocks){
             for(Block block: row){
-                hitBlock(block);
+                if(hitBlock(block)) {
+                    hit = true;
+                    blocksDestroyed++;
+                }
+            }
+        }
+
+        if(hit) {
+            if(blocksDestroyed >= 21) {
+                endGame(true);
+                return;
             }
         }
 
@@ -157,7 +178,7 @@ public class Breakout extends Game{
 
     @Override
     public boolean isOver(){
-        return false;
+        return ended;
     }//isOver
 
     /**
@@ -197,6 +218,34 @@ public class Breakout extends Game{
     }//getWidth
 
     /**
+     * Ends the current game because the player either won or lost
+     *
+     * @param won Whether the player won the game or not
+     */
+    private void endGame(boolean won){
+        ended = true;
+
+        Text message = new Text(); //Message to display
+        if(won){
+            message.setText("Congrats\nYou Won\nScore: " + getScore()); //Show win message
+        }else{
+            message.setText("You Lost\nScore: " + getScore()); //Show lose messages
+        }//if else
+
+        Stage s = new Stage(); //Create new stage do display win
+        VBox container = new VBox(50); //Parent container
+        Scene scene = new Scene(container); //Scene to show
+
+        container.setAlignment(Pos.CENTER);
+        container.getChildren().add(message);
+
+        s.setScene(scene); //set the scene
+        s.initModality(Modality.APPLICATION_MODAL);
+        s.sizeToScene(); //size it
+        s.show(); //show
+    }//gameEnded
+
+    /**
      * changes direction of the ball hits uppoer border
      */
     private void hitUp(){
@@ -211,7 +260,13 @@ public class Breakout extends Game{
     private void hitBottom(){
         if(ball.getY() + ball.getRadius() >= HEIGHT){
             lives--;
-            pane.getChildren().remove(ball.getC());//removes rectangle from screen
+            pane.getChildren().remove(ball.getC());//removes ball from screen
+
+            if(lives == 0) {
+                endGame(false);
+                return;
+            }
+
             newBall();
             life.setText(String.format("%01d", lives));
         }
@@ -231,14 +286,16 @@ public class Breakout extends Game{
      */
     private void hitRight(){
         if(ball.getX() + ball.getRadius() >= WIDTH){
-            goLeft();;
+            goLeft();
         }
     }//hit right
 
     /**
      * gets rid of block if hit
+     *
+     * @return true if the block was hit
      */
-    private void hitBlock(Block b){
+    private boolean hitBlock(Block b){
         if(ball.getC().getBoundsInParent().intersects(b.getR().getBoundsInParent()) && b.getPresent()){
             if(ball.getX() + ball.getRadius() >= b.getX() && ball.getX() < b.getX()){//if hit left of block
                 goLeft();
@@ -254,7 +311,11 @@ public class Breakout extends Game{
             }
             pane.getChildren().remove(b.getR());
             b.destroy();
+
+            return true;
         }
+
+        return false;
     }//hitBlock
 
     /**
@@ -271,7 +332,7 @@ public class Breakout extends Game{
     /**
      * turns the ball to go right
      */
-    public void goRight(){
+    private void goRight(){
         if(dir == BallDir.NW){
             dir = BallDir.NE;
         }else if(dir == BallDir.SW){
@@ -282,7 +343,7 @@ public class Breakout extends Game{
     /**
      * turns the ball to go down
      */
-    public void goDown(){
+    private void goDown(){
         if(dir == BallDir.NE){//if ball is moving left
             dir = BallDir.SE;
         }else if(dir == BallDir.NW){//if ball is moving right
@@ -293,7 +354,7 @@ public class Breakout extends Game{
     /**
      * turns the ball to go up
      */
-    public void goUp(){
+    private void goUp(){
         if(dir == BallDir.SE){//if ball is moving left
             dir = BallDir.NE;
         }else if(dir == BallDir.SW){//if ball is moving right

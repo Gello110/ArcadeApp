@@ -147,14 +147,14 @@ public class Board {
     	over = true;
         c.setState(CellType.HIT);
         game.addChanged(c);
-        game.gameEnded(false);
+        game.endGame(false);
     }//lose
 
     /**
      *  Called when player wins the game to terminate game
      */
     private void win(){
-		game.gameEnded(true);
+		game.endGame(true);
     }//win
 
     /**

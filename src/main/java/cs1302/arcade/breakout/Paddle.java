@@ -1,6 +1,5 @@
 package cs1302.arcade.breakout;
 
-
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -21,7 +20,7 @@ public class Paddle{
      * @param height  height of the paddle
      * @param game  the breakout game
      */
-    public Paddle(int width, int height, Breakout game){
+     Paddle(int width, int height, Breakout game){
         this.game = game;
         this.height = height;
         this.width = width;
@@ -34,7 +33,7 @@ public class Paddle{
      * @param y  y coordinate of the paddle to be rendered
      * @return  the rectangle representing the paddle
      */
-    public Rectangle render(int x, int y){
+     Rectangle render(int x, int y){
         if(paddle == null) {//makes a paddle if no paddle exists
             this.x = x;
             this.y = y;
@@ -63,7 +62,7 @@ public class Paddle{
      *
      * @return the y position of the paddle
      */
-    public int getY() {
+     int getY() {
         return y;
     }
 
@@ -90,7 +89,7 @@ public class Paddle{
      *
      * @return the rectangle representing the block
      */
-    public Rectangle getPaddle() {
+     Rectangle getPaddle() {
         return paddle;
     }
 }//Paddle

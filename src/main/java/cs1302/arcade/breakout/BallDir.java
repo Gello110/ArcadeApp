@@ -18,7 +18,7 @@ public enum BallDir {
      * @param x x direction of the ball
      * @param y y direction of the ball
      */
-    private BallDir(int x, int y){
+     BallDir(int x, int y){
         this.x = x;
         this.y = y;
 

@@ -5,7 +5,7 @@ import javafx.scene.shape.Circle;
 /**
  * Ball that breaks the blocks and bounces
  */
-public class Ball {
+class Ball {
     private int radius;
     private int x;
     private int y;
@@ -17,7 +17,7 @@ public class Ball {
      *
      * @param radius  the radius of the ball
      */
-    public Ball(int radius, Breakout game){
+    Ball(int radius, Breakout game){
         this.game = game;
         this.radius = radius;
     }//Ball
@@ -29,10 +29,9 @@ public class Ball {
      * @param y y position of the ball
      * @return the circle to be rendered to the screen
      */
-    public Circle render(int x, int y){
+    Circle render(int x, int y){
         this.x = x;
         this.y = y;
-        this.radius = radius;
         c = new Circle(x, y, radius);
         return c;
     }//render
@@ -42,7 +41,7 @@ public class Ball {
      * @param b the Direction the ball is going
      * @return the circle to be rendered to screen
      */
-    public Circle render(BallDir b, int speed){
+    Circle render(BallDir b, int speed){
         this.x += (speed * b.getX());//updates x
         this.y += (speed * b.getY());//updates y
 
@@ -56,7 +55,7 @@ public class Ball {
      *
      * @return the x position of the ball
      */
-    public int getX(){
+     int getX(){
         return x;
     }//getX
 
@@ -65,7 +64,7 @@ public class Ball {
      *
      * @return the y position of the ball
      */
-    public int getY(){
+     int getY(){
         return y;
     }//getY
 
@@ -74,7 +73,7 @@ public class Ball {
      *
      * @return the radius of the ball
      */
-    public int getRadius(){
+     int getRadius(){
         return radius;
     }//getRadius
 
@@ -83,7 +82,7 @@ public class Ball {
      *
      * @return the circle representing the ball
      */
-    public Circle getC(){
+     Circle getC(){
         return c;
     }
 

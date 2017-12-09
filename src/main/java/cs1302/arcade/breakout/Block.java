@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * Makes a block to be broken in Breakout game
  */
-public class Block {
+class Block {
     private int width;
     private int height;
     private int x;
@@ -19,7 +19,7 @@ public class Block {
      * @param width  the width of the block
      * @param height  the height of the block
      */
-    public Block(int width, int height){
+     Block(int width, int height){
         this.width = width;
         this.height = height;
 
@@ -32,7 +32,7 @@ public class Block {
      * @param y  y coordinate of the rectangle
      * @return the rectangle to render to screen
      */
-    public Rectangle render(int x, int y) {
+     Rectangle render(int x, int y) {
         present = true;
         this.x = x;
         this.y = y;
@@ -46,7 +46,7 @@ public class Block {
      *
      * @return the x position of the block
      */
-    public int getX() {
+     int getX() {
         return x;
     }
 
@@ -55,7 +55,7 @@ public class Block {
      *
      * @return the y position of the block
      */
-    public int getY() {
+     int getY() {
         return y;
     }
 
@@ -64,7 +64,7 @@ public class Block {
      *
      * @return the height of the block
      */
-    public int getHeight() {
+     int getHeight() {
         return height;
     }
 
@@ -73,7 +73,7 @@ public class Block {
      *
      * @return the width of the block
      */
-    public int getWidth() {
+     int getWidth() {
         return width;
     }
 
@@ -82,7 +82,7 @@ public class Block {
      *
      * @return the rectangle representing the block
      */
-    public Rectangle getR() {
+     Rectangle getR() {
         return r;
     }//getR
 
@@ -91,14 +91,14 @@ public class Block {
      *
      * @return wheter or not block is on screen
      */
-    public boolean getPresent(){
+     boolean getPresent(){
         return present;
     }//getPresent
 
     /**
      * breaks the block and keeps it from being hit again
      */
-    public void destroy(){
+     void destroy(){
         present = false;
     }//break
 }//Block
