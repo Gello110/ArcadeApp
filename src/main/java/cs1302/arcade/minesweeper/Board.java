@@ -69,7 +69,7 @@ public class Board {
 
 		for(int i = row - 1; i < row + 2; i++){
 			for(int j = col - 1; j < col + 2; j++){
-				if(-1 < i && i  < board.length - 1 && -1 < j && j< board[0].length - 1){
+				if(-1 < i && i  < board.length && -1 < j && j< board[0].length){
 					if(board[i][j].getType() != null && board[i][j].getType().equals(CellType.MINE)){
 						count++;
 					}//if

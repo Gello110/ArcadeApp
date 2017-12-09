@@ -178,6 +178,8 @@ public class Minesweeper extends Game{
             newImage.setSmooth(true);
             newImage.setPreserveRatio(true);
 
+            newImage.setOnMouseClicked(action -> processAction(c, action)); //Process mouse click
+
             gPane.add(newImage, c.getColumn(), c.getRow());
 
 
@@ -204,9 +206,11 @@ public class Minesweeper extends Game{
             return;
 
         if(action.getButton() == MouseButton.PRIMARY) { //Left Click
+            if(cell.getState() == CellType.FLAGGED)
+                return;
+
             gameBoard.reveal(cell.getRow(), cell.getColumn(), true); //reveal the cell
         } else { //Right Click
-            System.out.println(cell.getState() == CellType.FLAGGED);
             if(cell.getState() == CellType.FLAGGED){
                 gameBoard.unflag(cell.getRow(), cell.getColumn()); //unflag the cell
             }else if(cell.getState() == CellType.UNPRESSED) {
