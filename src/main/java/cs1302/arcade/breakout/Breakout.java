@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  *  Class representing a breakout game
  */
 public class Breakout extends Game{
-    private static final int HEIGHT = 650;
+    private static final int HEIGHT = 600;
     private static final int WIDTH = 750;
 
     private ArcadeApp app;
@@ -371,7 +371,7 @@ public class Breakout extends Game{
     private boolean hitBlock(Block b){
         if(ball.getC().getBoundsInParent().intersects(b.getR().getBoundsInParent()) && b.getPresent()){
             if(dir == BallDir.SE || dir == BallDir.SW) { //Coming from the top
-                if(ball.getY() < b.getY()) { //above the block
+                if(b.getX() < ball.getX() && ball.getX() < b.getX() + b.getWidth()) { //above the block
                     if(dir == BallDir.SW)
                         dir = BallDir.NW;
                     else
@@ -383,7 +383,7 @@ public class Breakout extends Game{
                         dir = BallDir.SW;
                 }
             } else { //Coming from the bottom (SW or SE)
-                if(ball.getY() + ball.getRadius() < b.getY() + b.getHeight()) { //Side of the block
+                if(ball.getY() + ball.getRadius() < b.getY() + b.getHeight() && !(b.getX() < ball.getX() && ball.getX() < b.getX() + b.getWidth())) { //Side of the block
                     if(dir == BallDir.NE)
                         dir = BallDir.NW;
                     else
