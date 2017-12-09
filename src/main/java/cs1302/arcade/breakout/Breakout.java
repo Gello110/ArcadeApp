@@ -5,6 +5,8 @@ import cs1302.arcade.Game;
 import cs1302.arcade.GameChoiceScene;
 import cs1302.arcade.minesweeper.Cell;
 import cs1302.arcade.minesweeper.CellType;
+import javafx.animation.KeyFrame;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -145,11 +147,6 @@ public class Breakout extends Game{
             paddle.render(-15, 0);
         }
 
-        //checks if ball has hit sides of window
-        hitLeft();
-        hitRight();
-        hitUp();
-        hitBottom();
 
         boolean hit = false;
         //checks of ball had hit any blocks
@@ -166,6 +163,7 @@ public class Breakout extends Game{
 
                     hit = true;
                     blocksDestroyed++;
+                    break;
                 }
             }
         }
@@ -184,10 +182,16 @@ public class Breakout extends Game{
                 currLevel.setText(String.format("%02d", level));
                 return;
             }
+        }else{
+            //checks if ball has hit sides of window
+            hitLeft();
+            hitRight();
+            hitUp();
+            hitBottom();
         }
 
         //checks if hit paddle
-        if(ball.getY() + ball.getRadius() > paddle.getY() && ball.getY() < paddle.getY()
+        if(ball.getY() + ball.getRadius() > paddle.getY()
                 && ball.getC().getBoundsInParent().intersects(paddle.getPaddle().getBoundsInParent())){
             goUp();
         }
@@ -249,16 +253,8 @@ public class Breakout extends Game{
         dir = BallDir.NE;
         ball = new Ball(7, 2);
         pane.getChildren().add(ball.render(375, HEIGHT - 100));
-    }//newBall
 
-    /**
-     *  returns the height of the pane
-     *
-     * @return  the height of the gameplay pane
-     */
-    public int getHeight(){
-        return HEIGHT;
-    }//getHeight
+    }//newBall
 
     /**
      * reuturns the width of the pane
@@ -322,7 +318,6 @@ public class Breakout extends Game{
                 endGame(false);
                 return;
             }
-
             newBall();
         }
     }//hit bottom
@@ -342,6 +337,7 @@ public class Breakout extends Game{
     private void hitRight(){
         if(ball.getX() + ball.getRadius() >= WIDTH){
             goLeft();
+            System.out.println("hit right wall");
         }
     }//hit right
 
@@ -352,18 +348,22 @@ public class Breakout extends Game{
      */
     private boolean hitBlock(Block b){
         if(ball.getC().getBoundsInParent().intersects(b.getR().getBoundsInParent()) && b.getPresent()){
-            if(ball.getX() + ball.getRadius() >= b.getX() && ball.getX() < b.getX()){//if hit left of block
+            if(ball.getX() + ball.getRadius() >= b.getX() && ball.getX() < b.getX()
+                    && ball.getY() - ball.getRadius() > b.getHeight() + b.getY() && ball.getY() + ball.getRadius() < b.getY()){//if hit left of block
+                System.out.println("go Left");
                 goLeft();
-            }
-            if(ball.getX() - ball.getRadius() <= b.getX() + b.getWidth() && ball.getX() > b.getX()){//if hit right of block
+            }else if(ball.getX() - ball.getRadius() <= b.getX() + b.getWidth() && ball.getX() > b.getX()
+                    && ball.getY() - ball.getRadius() > b.getY() + b.getHeight() && ball.getY() + ball.getRadius() < b.getY()){//if hit right of block
+                System.out.println("go right");
                 goRight();
-            }
-            if(ball.getY() + ball.getRadius() >= b.getY() && ball.getY() < b.getY()){//if hit top of block
+            }else if(ball.getY() + ball.getRadius() >= b.getY() && ball.getY() < b.getY()){//if hit top of block
+                System.out.println("go Up");
                 goUp();
-            }
-            if(ball.getY() - ball.getRadius() <= b.getY() + b.getHeight() && ball.getY() > b.getY()){//if hit bottom of block
+            }else if(ball.getY() - ball.getRadius() <= b.getY() + b.getHeight() && ball.getY() > b.getY()){//if hit bottom of block
+                System.out.println("go Down");
                 goDown();
             }
+            System.out.println("changed\n");
             pane.getChildren().remove(b.getR());
             b.destroy();
 
@@ -381,6 +381,7 @@ public class Breakout extends Game{
         if(dir == BallDir.NE){
             dir = BallDir.NW;
         }else if(dir == BallDir.SE){
+            System.out.println("go left down from right down");
             dir = BallDir.SW;
         }
     }//goLeft

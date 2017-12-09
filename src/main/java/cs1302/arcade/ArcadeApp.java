@@ -15,8 +15,8 @@ import javafx.util.Duration;
  */
 public class ArcadeApp extends Application {
 
-    Stage stage;
-    boolean isShown;
+    private Stage stage;
+    private boolean isShown;
 
     @Override
     public void start(Stage stage) {

@@ -79,23 +79,6 @@ public class Paddle{
         return y;
     }
 
-    /**
-     * returns the height of the paddle
-     *
-     * @return the height of the paddle
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * returns the width of the paddle
-     *
-     * @return the width of the paddle
-     */
-    public int getWidth() {
-        return width;
-    }
 
     /**
      * returns the rectangle representing the block
