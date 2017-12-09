@@ -3,10 +3,6 @@ package cs1302.arcade.breakout;
 import cs1302.arcade.ArcadeApp;
 import cs1302.arcade.Game;
 import cs1302.arcade.GameChoiceScene;
-import cs1302.arcade.minesweeper.Cell;
-import cs1302.arcade.minesweeper.CellType;
-import javafx.animation.KeyFrame;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -193,7 +189,11 @@ public class Breakout extends Game{
         //checks if hit paddle
         if(ball.getY() + ball.getRadius() > paddle.getY()
                 && ball.getC().getBoundsInParent().intersects(paddle.getPaddle().getBoundsInParent())){
-            goUp();
+            if(dir == BallDir.SE){//if ball is moving left
+                dir = BallDir.NE;
+            }else if(dir == BallDir.SW){//if ball is moving right
+                dir = BallDir.NW;
+            }
         }
 
         score.setText(String.format("%04d", getScore()));
@@ -251,7 +251,7 @@ public class Breakout extends Game{
      */
     private void newBall(){
         dir = BallDir.NE;
-        ball = new Ball(7, 2);
+        ball = new Ball(10, 2);
         pane.getChildren().add(ball.render(375, HEIGHT - 100));
 
     }//newBall
@@ -261,7 +261,7 @@ public class Breakout extends Game{
      *
      * @return the width of the gameplay pane
      */
-    public int getWidth(){
+    int getWidth(){
         return WIDTH;
     }//getWidth
 
@@ -299,7 +299,11 @@ public class Breakout extends Game{
      */
     private void hitUp(){
         if(ball.getY() - ball.getRadius() <= 0){
-            goDown();
+            if(dir == BallDir.NE){//if ball is moving left
+                dir = BallDir.SE;
+            }else if(dir == BallDir.NW){//if ball is moving right
+                dir = BallDir.SW;
+            }
 
             paddle.shrink();
         }
@@ -327,7 +331,11 @@ public class Breakout extends Game{
      */
     private void hitLeft(){
         if(ball.getX() - ball.getRadius() <= 0){
-            goRight();
+            if(dir == BallDir.NW){
+                dir = BallDir.NE;
+            }else if(dir == BallDir.SW){
+                dir = BallDir.SE;
+            }
         }
     }//hit left
 
@@ -336,8 +344,11 @@ public class Breakout extends Game{
      */
     private void hitRight(){
         if(ball.getX() + ball.getRadius() >= WIDTH){
-            goLeft();
-            System.out.println("hit right wall");
+            if(dir == BallDir.NE){
+                dir = BallDir.NW;
+            }else if(dir == BallDir.SE){
+                dir = BallDir.SW;
+            }
         }
     }//hit right
 
@@ -348,22 +359,32 @@ public class Breakout extends Game{
      */
     private boolean hitBlock(Block b){
         if(ball.getC().getBoundsInParent().intersects(b.getR().getBoundsInParent()) && b.getPresent()){
-            if(ball.getX() + ball.getRadius() >= b.getX() && ball.getX() < b.getX()
-                    && ball.getY() - ball.getRadius() > b.getHeight() + b.getY() && ball.getY() + ball.getRadius() < b.getY()){//if hit left of block
-                System.out.println("go Left");
-                goLeft();
-            }else if(ball.getX() - ball.getRadius() <= b.getX() + b.getWidth() && ball.getX() > b.getX()
-                    && ball.getY() - ball.getRadius() > b.getY() + b.getHeight() && ball.getY() + ball.getRadius() < b.getY()){//if hit right of block
-                System.out.println("go right");
-                goRight();
-            }else if(ball.getY() + ball.getRadius() >= b.getY() && ball.getY() < b.getY()){//if hit top of block
-                System.out.println("go Up");
-                goUp();
-            }else if(ball.getY() - ball.getRadius() <= b.getY() + b.getHeight() && ball.getY() > b.getY()){//if hit bottom of block
-                System.out.println("go Down");
-                goDown();
+            if(dir == BallDir.SE || dir == BallDir.SW) { //Coming from the top
+                if(ball.getY() < b.getY()) { //above the block
+                    if(dir == BallDir.SW)
+                        dir = BallDir.NW;
+                    else
+                        dir = BallDir.NE;
+                } else { //At the side of the block
+                    if(dir == BallDir.SW)
+                        dir = BallDir.SE;
+                    else
+                        dir = BallDir.SW;
+                }
+            } else { //Coming from the bottom (SW or SE)
+                if(ball.getY() + ball.getRadius() < b.getY() + b.getHeight()) { //Side of the block
+                    if(dir == BallDir.NE)
+                        dir = BallDir.NW;
+                    else
+                        dir = BallDir.NE;
+                } else { //Below the block
+                    if (dir == BallDir.NE)
+                        dir = BallDir.SE;
+                    else
+                        dir = BallDir.SW;
+                }
             }
-            System.out.println("changed\n");
+
             pane.getChildren().remove(b.getR());
             b.destroy();
 
@@ -373,50 +394,4 @@ public class Breakout extends Game{
 
         return false;
     }//hitBlock
-
-    /**
-     * turns the ball to go left
-     */
-    private void goLeft(){
-        if(dir == BallDir.NE){
-            dir = BallDir.NW;
-        }else if(dir == BallDir.SE){
-            System.out.println("go left down from right down");
-            dir = BallDir.SW;
-        }
-    }//goLeft
-
-    /**
-     * turns the ball to go right
-     */
-    private void goRight(){
-        if(dir == BallDir.NW){
-            dir = BallDir.NE;
-        }else if(dir == BallDir.SW){
-            dir = BallDir.SE;
-        }
-    }//goRight
-
-    /**
-     * turns the ball to go down
-     */
-    private void goDown(){
-        if(dir == BallDir.NE){//if ball is moving left
-            dir = BallDir.SE;
-        }else if(dir == BallDir.NW){//if ball is moving right
-            dir = BallDir.SW;
-        }
-    }//go up
-
-    /**
-     * turns the ball to go up
-     */
-    private void goUp(){
-        if(dir == BallDir.SE){//if ball is moving left
-            dir = BallDir.NE;
-        }else if(dir == BallDir.SW){//if ball is moving right
-            dir = BallDir.NW;
-        }
-    }//go up
-
 }//Breakout
