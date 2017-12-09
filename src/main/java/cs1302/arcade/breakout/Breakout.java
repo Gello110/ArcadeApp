@@ -33,12 +33,16 @@ public class Breakout extends Game{
     private Ball ball;
     private int level;
     private int lives;
-    private int speed;
     private int blocksDestroyed;
     private BallDir dir;//trajectory of the ball
     private Pane pane;
     private Text life;
+    private Text currLevel;
+    private Text score;
     private boolean ended;
+
+    private boolean rightPressed;
+    private boolean leftPressed;
 
     /**
      *  Constructs a breakout game
@@ -46,17 +50,9 @@ public class Breakout extends Game{
     public Breakout(ArcadeApp app){
         super("Breakout");
 
-        level = 1;
         lives = 3;
-        speed = 2;
         //initialises the array of blocks to be broken
-        blocks = new Block[3][7];
-        for(int i = 0; i < blocks.length; i++){
-            for(int j = 0; j < blocks[0].length; j++){
-                blocks[i][j] = new Block(100, 30);
-            }//for j
-        }//for i
-
+        createLevel(1, 4, 1);
 
         this.app = app;
     }//Breakout
@@ -71,9 +67,9 @@ public class Breakout extends Game{
 
         //creates the score and level to be shown to player
         Font font = Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toString(), 35);
-        Text score = new Text(String.format("%04d", getScore()));
+        score = new Text(String.format("%04d", getScore()));
         score.setFont(font);
-        Text currLevel = new Text(String.format("%02d", level));
+        currLevel = new Text(String.format("%02d", level));
         currLevel.setFont(font);
         life = new Text(String.format("%01d", lives));
         life.setFont(font);
@@ -107,27 +103,28 @@ public class Breakout extends Game{
         pane.setMinWidth(WIDTH);
 
         //adds rectangles to pane
-        int xPlace = 6;
-        int yPlace = 100;
-        for(Block[] row: blocks){
-            for(Block block: row){
-                pane.getChildren().add(block.render(xPlace, yPlace));
-                xPlace += 106;
-            }//for row
-            xPlace = 6;
-            yPlace += 36;
-        }//for blocks
+        displayBlocks();
 
         //renders the paddle to the screen
-        paddle = new Paddle(200, 30, this);
+        paddle = new Paddle(150, 20, this);
         pane.getChildren().add(paddle.render(275, HEIGHT - 50));
 
         //handles input from the player to move the paddle
         scene.setOnKeyPressed(e -> {
-            if(e.getCode() == KeyCode.LEFT){
-                paddle.render(-30,0);
+            if(e.getCode() == KeyCode.RIGHT) {
+                rightPressed = true;
+                leftPressed = false;
+            }else if(e.getCode() == KeyCode.LEFT){
+                rightPressed = false;
+                leftPressed = true;
+            }
+        });
+
+        scene.setOnKeyReleased(e -> {
+            if(e.getCode() == KeyCode.LEFT) {
+                leftPressed = false;
             }else if(e.getCode() == KeyCode.RIGHT){
-                paddle.render(30, 0);
+                rightPressed = false;
             }
         });
 
@@ -142,6 +139,12 @@ public class Breakout extends Game{
     public void updateScene(Scene scene){
         if(ended) return;
 
+        if(rightPressed) {
+            paddle.render(15,0);
+        } else if(leftPressed) {
+            paddle.render(-15, 0);
+        }
+
         //checks if ball has hit sides of window
         hitLeft();
         hitRight();
@@ -153,6 +156,14 @@ public class Breakout extends Game{
         for(Block[] row: blocks){
             for(Block block: row){
                 if(hitBlock(block)) {
+                    ball.addBlockBroken();
+
+                    if(block.getType() == Block.BlockType.ORANGE) {
+                        ball.hitOrange();
+                    } else if(block.getType() == Block.BlockType.RED) {
+                        ball.hitRed();
+                    }
+
                     hit = true;
                     blocksDestroyed++;
                 }
@@ -160,8 +171,17 @@ public class Breakout extends Game{
         }
 
         if(hit) {
-            if(blocksDestroyed >= 21) {
-                endGame(true);
+            if(blocksDestroyed >= (blocks.length * blocks[0].length)) {
+                if(level == 1) {
+                    blocksDestroyed = 0;
+
+                    pane.getChildren().remove(ball.getC());//removes ball from screen
+                    createLevel(2, 8, 2);
+                    displayBlocks();
+                    newBall();
+                } else endGame(true);
+
+                currLevel.setText(String.format("%02d", level));
                 return;
             }
         }
@@ -172,9 +192,50 @@ public class Breakout extends Game{
             goUp();
         }
 
-        ball.render(dir, speed);//changes position of the ball
+        score.setText(String.format("%04d", getScore()));
+
+        ball.render(dir);//changes position of the ball
 
     }//updateScene
+
+    /**
+     * Creates the level
+     *
+     * @param level The level being created
+     * @param rows The number of rows being created
+     * @param increment The number of rows that are a certain type
+     */
+    private void createLevel(int level, int rows, int increment) {
+        this.level = level;
+        blocks = new Block[rows][14];
+        int blockType = 0;
+
+        for(int i = 0; i < blocks.length; i++){
+            for(int j = 0; j < blocks[0].length; j++){
+                blocks[i][j] = new Block(50, 20, blockType);
+            }//for j
+
+            if((i + 1) % increment == 0) {
+                blockType++;
+            }
+        }//for i
+    }
+
+    /**
+     * Displays the blocks to the screen
+     */
+    private void displayBlocks() {
+        int xPlace = 3;
+        int yPlace = 100;
+        for(Block[] row: blocks){
+            for(Block block: row){
+                pane.getChildren().add(block.render(xPlace, yPlace));
+                xPlace += 53;
+            }//for row
+            xPlace = 3;
+            yPlace += 23;
+        }//for blocks
+    }
 
     @Override
     public boolean isOver(){
@@ -182,20 +243,11 @@ public class Breakout extends Game{
     }//isOver
 
     /**
-     * returns the score for the game
-     *
-     * @return  the current soore
-     */
-    public int getScore() {
-        return 50;
-    }//getScore
-
-    /**
      * makes a new ball
      */
     private void newBall(){
         dir = BallDir.NE;
-        ball = new Ball(10, this);
+        ball = new Ball(7, 2);
         pane.getChildren().add(ball.render(375, HEIGHT - 100));
     }//newBall
 
@@ -225,6 +277,7 @@ public class Breakout extends Game{
     private void endGame(boolean won){
         ended = true;
 
+
         Text message = new Text(); //Message to display
         if(won){
             message.setText("Congrats\nYou Won\nScore: " + getScore()); //Show win message
@@ -251,6 +304,8 @@ public class Breakout extends Game{
     private void hitUp(){
         if(ball.getY() - ball.getRadius() <= 0){
             goDown();
+
+            paddle.shrink();
         }
     }//hitUp
 
@@ -261,6 +316,7 @@ public class Breakout extends Game{
         if(ball.getY() + ball.getRadius() >= HEIGHT){
             lives--;
             pane.getChildren().remove(ball.getC());//removes ball from screen
+            life.setText(String.format("%01d", lives));
 
             if(lives == 0) {
                 endGame(false);
@@ -268,7 +324,6 @@ public class Breakout extends Game{
             }
 
             newBall();
-            life.setText(String.format("%01d", lives));
         }
     }//hit bottom
 
@@ -312,6 +367,7 @@ public class Breakout extends Game{
             pane.getChildren().remove(b.getR());
             b.destroy();
 
+            addScore(b.getType().getScore());
             return true;
         }
 

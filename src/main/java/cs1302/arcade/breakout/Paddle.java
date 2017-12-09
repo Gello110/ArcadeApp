@@ -12,6 +12,7 @@ public class Paddle{
     private int y;
     private Rectangle paddle;
     private Breakout game;
+    private boolean shrunk;
 
     /**
      *  Makes a new paddle object
@@ -47,6 +48,18 @@ public class Paddle{
 
         return paddle;
     }//render
+
+    /**
+     * Shrinks the paddle after it hits the top wall
+     */
+    void shrink() {
+        if(!shrunk) {
+            width = (int) (width * .75);
+            shrunk = true;
+
+            paddle.setWidth(width);
+        }
+    }
 
     /**
      * returns the x position of the paddle

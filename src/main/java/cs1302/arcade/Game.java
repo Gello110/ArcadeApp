@@ -16,7 +16,7 @@ public abstract class Game {
      * @param name The name of the game.
      */
     public Game(String name) {
-	    this.name = name; // Set game name
+        this.name = name; // Set game name
     }
 
     /**
@@ -25,7 +25,7 @@ public abstract class Game {
      * @return The scene the game will use.
      */
     public abstract Scene initScene();
-    
+
     /**
      * Updates the scene that is displayed to the player.
      *
@@ -39,14 +39,14 @@ public abstract class Game {
      * @return If game is over
      */
     public abstract boolean isOver();
-    
+
     /**
      * Gets the current score of the game.
      *
      * @return The score of the game.
      */
     public int getScore() {
-	    return this.score;
+        return this.score;
     }
 
     /**
@@ -55,6 +55,15 @@ public abstract class Game {
      * @param score The score to set.
      */
     protected void setScore(int score) {
-	this.score = score;
+        this.score = score;
+    }
+
+    /**
+     * Adds to the current score of the game
+     *
+     * @param score The score to add
+     */
+    protected void addScore(int score) {
+        this.score += score;
     }
 }

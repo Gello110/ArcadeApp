@@ -1,5 +1,6 @@
 package cs1302.arcade.breakout;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -12,6 +13,7 @@ class Block {
     private int y;
     private Rectangle r;
     private boolean present;
+    private BlockType type;
 
     /**
      *  Constructs a Block object
@@ -19,10 +21,14 @@ class Block {
      * @param width  the width of the block
      * @param height  the height of the block
      */
-     Block(int width, int height){
+     Block(int width, int height, int level){
         this.width = width;
         this.height = height;
 
+        for(BlockType blockType : BlockType.values()) {
+            if(blockType.ordinal() == level)
+                type = blockType;
+        }
     }//Block
 
     /**
@@ -37,6 +43,8 @@ class Block {
         this.x = x;
         this.y = y;
         r = new Rectangle(x, y, width, height);
+
+        r.setFill(type.getColor());
 
         return r;
     }//render
@@ -101,4 +109,55 @@ class Block {
      void destroy(){
         present = false;
     }//break
+
+    /**
+     * Returns the type of this block
+     *
+     * @return a BlockType representing the type of this block
+     */
+    BlockType getType() {
+         return this.type;
+    }
+
+    /**
+     * Enum that represents the type of the block
+     */
+    enum BlockType {
+        RED(7, Color.RED),
+        ORANGE(5, Color.ORANGE),
+        GREEM(3, Color.GREEN),
+        YELLOW(1, Color.YELLOW);
+
+         private int score;
+         private Color color;
+
+        /**
+         * Creates a BlockType
+         *
+         * @param score The points this type adds to score when broken
+         * @param color The color of this block type
+         */
+         BlockType(int score, Color color) {
+             this.color = color;
+             this.score = score;
+         }
+
+        /**
+         * Gets the score breaking this block type earns
+         *
+         * @return points to add for breaking this block
+         */
+        public int getScore() {
+            return score;
+        }
+
+        /**
+         * Gets the color of this block type
+         *
+         * @return the color of this block type
+         */
+        public Color getColor() {
+            return color;
+        }
+    }
 }//Block
