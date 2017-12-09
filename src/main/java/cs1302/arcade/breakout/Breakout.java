@@ -12,9 +12,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -102,6 +101,12 @@ public class Breakout extends Game{
         pane.setMinHeight(HEIGHT);
         pane.setMaxWidth(WIDTH);
         pane.setMinWidth(WIDTH);
+
+        BorderWidths widths = new BorderWidths(3, 3, 0, 3); //Set the widths so bottom has no border
+        Border border = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, widths)); //create border
+
+
+        pane.setBorder(border); //Add border
 
         //adds rectangles to pane
         displayBlocks();
