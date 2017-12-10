@@ -42,7 +42,7 @@ public class Minesweeper extends Game{
     private GridPane gPane;//GridPane containing th cells of the game
     private int timer;//Seconds since game has started
     private ArcadeApp app;
-    Timeline timing;//timer for the game
+    private Timeline timing;//timer for the game
 
     private Set<Cell> cellsChanged; //Set containing the cells changed since the last update of the screen
 
@@ -85,10 +85,7 @@ public class Minesweeper extends Game{
         timing.getKeyFrames().add(keyframe);
         timing.play();
 
-
-        newGame.setOnAction(action -> {
-            app.setCurrentGame(new Minesweeper(app));
-           }); //Reset board for new game
+        newGame.setOnAction(action -> app.setCurrentGame(new Minesweeper(app))); //Reset board for new game
 
         bPane.setRight(minesLeft); //Set position
         bPane.setCenter(buttons);
@@ -121,8 +118,9 @@ public class Minesweeper extends Game{
     }//init Scene
 
     /**
+     * End the current game
      *
-   
+     * @param won Whether the player won or not
      */
     void endGame(boolean won){
         timing.stop();
@@ -178,7 +176,6 @@ public class Minesweeper extends Game{
     @Override
     public void updateScene(Scene scene){
         for(Cell c: cellsChanged){//replaces all the changed cells
-
             ImageView newImage = new ImageView(c.getState().getImage());
             newImage.setFitWidth(30);
             newImage.setFitHeight(30);
@@ -188,17 +185,14 @@ public class Minesweeper extends Game{
             newImage.setOnMouseClicked(action -> processAction(c, action)); //Process mouse click
 
             gPane.add(newImage, c.getColumn(), c.getRow());
-
-
         }//for all cells in cellsChanged
 
         cellsChanged.clear();//clears the cells in the set
-
     }//updateScene
 
     @Override
     public boolean isOver(){
-	    return gameBoard.getMinesLeft() == 0 || gameBoard.getOver();
+	    return gameBoard.getOver();
 
     }//isOver
 
