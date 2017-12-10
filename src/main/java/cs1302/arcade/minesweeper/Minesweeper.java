@@ -41,7 +41,6 @@ public class Minesweeper extends Game{
     private Text time; //Text displaying the time the player has been playing
     private GridPane gPane;//GridPane containing th cells of the game
     private int timer;//Seconds since game has started
-    private ArcadeApp app;
     private Timeline timing;//timer for the game
 
     private Set<Cell> cellsChanged; //Set containing the cells changed since the last update of the screen
@@ -50,9 +49,7 @@ public class Minesweeper extends Game{
      *  Constructs a minesweeper game
      */
     public Minesweeper(ArcadeApp app){
-	    super("Minesweeper");
-
-        this.app = app;
+	    super("Minesweeper", app);
 
 	    gameBoard = new Board(GAME_ROWS, GAME_COLUMNS, this); //Initiate game board
         cellsChanged = new HashSet<>();

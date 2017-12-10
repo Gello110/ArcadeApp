@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 public abstract class Game {
 
     private String name;
+    protected ArcadeApp app;
     private int score;
 
     /**
@@ -22,8 +23,9 @@ public abstract class Game {
      *
      * @param name The name of the game.
      */
-    public Game(String name) {
+    public Game(String name, ArcadeApp app) {
         this.name = name; // Set game name
+        this.app = app; //Set the main class
     }
 
     /**
@@ -91,6 +93,7 @@ public abstract class Game {
             if(initials.isEmpty())
                 return;
 
+            app.getScoreHandler().addScore(name, initials, getScore());
         };
 
         input.setOnAction(handler); //set event handler
