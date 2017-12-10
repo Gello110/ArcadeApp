@@ -38,8 +38,8 @@ public class Scores {
             b.createNewFile();//makes sure file exists
             m.createNewFile();//makes sure file exists
 
-            BufferedReader breakout = null;
-            BufferedReader minesweeper = null;
+            BufferedReader breakout;
+            BufferedReader minesweeper;
 
             breakout = new BufferedReader(new FileReader(b));
             minesweeper = new BufferedReader(new FileReader(m));
@@ -48,18 +48,22 @@ public class Scores {
             String[] data;//data for a person
 
             int i = 0;
-            while ((person = breakout.readLine()) != null || i < 10) {
+            while ((person = breakout.readLine()) != null && i < 10) {
                 data = person.split(" ");
                 bScores.add(new Entry(data[0], Integer.parseInt(data[1])));
                 i++;
             }
 
             i = 0;
-            while((person = breakout.readLine()) != null || i < 10){
+            while((person = minesweeper.readLine()) != null && i < 10){
                 data = person.split(" ");
                 mScores.add(new Entry(data[0], Integer.parseInt(data[1])));
                 i++;
             }
+
+            breakout.close();
+            minesweeper.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +141,7 @@ public class Scores {
      * @return
      */
     public boolean addScore(String game, String name, int score){
-        if(game.equals("minesweeper")){
+        if(game.equalsIgnoreCase("minesweeper")){
             //adds score to list of scores and sorts
             mScores.add(new Entry(name,score));
             mScores.sort((e1, e2) -> e2.compareTo(e1));
@@ -146,7 +150,7 @@ public class Scores {
             if(mScores.size() > 10){
                 mScores.subList(0,9);
             }
-        }else if(game.equals("breakout")){
+        }else if(game.equalsIgnoreCase("breakout")){
             //adds score to list of scores and sorts
             bScores.add(new Entry(name, score));
             bScores.sort((e1, e2) -> e2.compareTo(e1));
@@ -155,6 +159,7 @@ public class Scores {
             if(bScores.size() > 10){
                 bScores.subList(0, 9);
             }
+
         }else{
             return false;
         }
@@ -165,7 +170,32 @@ public class Scores {
      * writes scores to files
      */
     public void write(){
+        try {
+            //makes file objects to write to
+            File bScore = new File("bScore.txt");//breakout score file
+            bScore.createNewFile();
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(bScore));
+            File mScore = new File("mScores.txt");//minesweeper score file
+            mScore.createNewFile();
+            BufferedWriter mWriter = new BufferedWriter(new FileWriter(mScore));
 
+            //writes breakout scores
+            for(Entry e: bScores){
+                bWriter.write(e.getName() + " " + e.getScore());
+                bWriter.newLine();
+            }//for e in bScores
+
+            //writes minesweeper scores
+            for(Entry e: mScores){
+                mWriter.write(e.getName() + " " + e.getScore());
+            }//for e in mScores
+
+            bWriter.close();
+            mWriter.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }//try catch
     }//write
 
 }//Scores
