@@ -207,6 +207,11 @@ public class Minesweeper extends Game{
 	    return gameBoard.getOver();
 
     }//isOver
+    
+    @Override
+    public int getScore() {
+        return gameBoard.getScore();
+    }
 
     /**
      * Processes user clicks
