@@ -1,6 +1,13 @@
 package cs1302.arcade;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 /**
  * Class that represents Games in the arcade, all games extend this class
@@ -45,7 +52,7 @@ public abstract class Game {
      *
      * @return The score of the game.
      */
-    public int getScore() {
+    protected int getScore() {
         return this.score;
     }
 
@@ -65,5 +72,36 @@ public abstract class Game {
      */
     protected void addScore(int score) {
         this.score += score;
+    }
+
+    /**
+     * Get the input area where the player puts in their intials
+     *
+     * @return The HBox object containing the input area
+     */
+    protected HBox getInputArea() {
+        HBox hBox = new HBox(); //create HBox that holds input info
+
+        Text text = new Text("Your name:"); //Text before input area
+        TextField input = new TextField("Name"); //input area
+        Button button = new Button("Save"); //button to save score
+        EventHandler<ActionEvent> handler = e -> { //event handler called when player enters information
+            String initials = input.getText();
+
+            if(initials.isEmpty())
+                return;
+
+        };
+
+        input.setOnAction(handler); //set event handler
+        button.setOnAction(handler);
+
+        input.setMaxWidth(100); //set width of input area
+
+        hBox.getChildren().addAll(text, input, button); //add nodes
+        hBox.setSpacing(5); //set spacing
+        hBox.setAlignment(Pos.CENTER); //set alignment
+
+        return hBox;
     }
 }
