@@ -70,7 +70,10 @@ public class Minesweeper extends Game{
         time = new Text(String.format("%03d", timer)); //The time spent playing the game
         time.setFont(Font.loadFont( getClass().getClassLoader().getResource("digital.ttf").toString(), 30));
         Button change = new Button("Switch Game");
-        change.setOnAction(e -> app.setCurrentScene(new GameChoiceScene(app)));
+        change.setOnAction(e -> {
+            app.setCurrentScene(new GameChoiceScene(app));
+            gameBoard.end();
+        });
         HBox buttons = new HBox(20);
         buttons.getChildren().addAll(newGame, change);
         buttons.setAlignment(Pos.CENTER);

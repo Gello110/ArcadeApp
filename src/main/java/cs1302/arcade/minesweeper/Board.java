@@ -272,4 +272,11 @@ public class Board {
 		return over;
 	}//get over
 
+	/**
+	 * Ends the game forcefully. Used for switching to a different game.
+	 */
+	protected  void end() {
+		over = true;
+	}
+
 }//Board
