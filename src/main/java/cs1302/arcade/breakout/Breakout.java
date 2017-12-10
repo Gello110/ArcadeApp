@@ -44,13 +44,11 @@ public class Breakout extends Game{
      *  Constructs a breakout game
      */
     public Breakout(ArcadeApp app){
-        super("Breakout");
+        super("Breakout", app);
 
         lives = 3;
         //initialises the array of blocks to be broken
         createLevel(1, 4, 1);
-
-        this.app = app;
     }//Breakout
 
     @Override
