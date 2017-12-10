@@ -293,7 +293,7 @@ public class Breakout extends Game{
         container.setAlignment(Pos.CENTER);
         container.setPadding(new Insets(20)); //Set padding
 
-        container.getChildren().addAll(message, getInputArea());
+        container.getChildren().addAll(message, getInputArea(s));
 
         s.setScene(scene); //set the scene
         s.initModality(Modality.APPLICATION_MODAL);

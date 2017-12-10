@@ -10,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * Class that represents Games in the arcade, all games extend this class
@@ -79,11 +80,12 @@ public abstract class Game {
     }
 
     /**
-     * Get the input area where the player puts in their intials
+     * Get the input area where the player puts in their initials
      *
+     * @param stage The stage this input area will be displayed on
      * @return The HBox object containing the input area
      */
-    protected HBox getInputArea() {
+    protected HBox getInputArea(Stage stage) {
         HBox hBox = new HBox(); //create HBox that holds input info
 
         Text text = new Text("Your name:"); //Text before input area
@@ -96,6 +98,7 @@ public abstract class Game {
                 return;
 
             app.getScoreHandler().addScore(name, initials, getScore());
+            stage.close();
         };
 
         input.setOnAction(handler); //set event handler
