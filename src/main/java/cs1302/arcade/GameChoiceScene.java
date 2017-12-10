@@ -7,10 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 /**
  * Class used to provide the user with a window to choose the game
@@ -18,8 +16,8 @@ import javafx.scene.layout.VBox;
  */
 public class GameChoiceScene extends Scene {
 
-    private ArcadeApp mainClass;
-    private StackPane parent;
+    private final ArcadeApp mainClass;
+    private final StackPane parent;
     /**
      * Constructs a GameChoiceScene Object.
      *

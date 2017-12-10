@@ -6,7 +6,7 @@ import javafx.scene.shape.Circle;
  * Ball that breaks the blocks and bounces
  */
 class Ball {
-    private int radius;
+    private final int radius;
     private int x;
     private int y;
     private Circle c;
@@ -14,48 +14,42 @@ class Ball {
     private int brokenBlocks;
     private boolean hitOrange;
     private boolean hitRed;
-    private Direction direction;
+    private final Direction direction;
 
     /**
      *  creates a ball object with a radius
      *
-     * @param radius  the radius of the ball
-     * @param speed the initial speed of the ball
      */
-    Ball(int radius, int speed){
-        this.speed = speed; //set initial speed
-        this.radius = radius; //set radius
-        this.direction = new Direction(2, -2); //set direction with initial xDir change of 2 and yDir change of -2
+    Ball(){
+        this.speed = 2; //set initial speed
+        this.radius = 7; //set radius
+        this.direction = new Direction(); //set direction with initial xDir change of 2 and yDir change of -2
     }//Ball
 
     /**
      * renders the circle to the screen
      *
-     * @param x x position of the ball
      * @param y y position of the ball
      * @return the circle to be rendered to the screen
      */
-    Circle render(int x, int y){
-        this.x = x; //set new position
+    Circle render(int y){
+        this.x = 375; //set new position
         this.y = y;
-        this.c = new Circle(x, y, radius); //create circle
+        this.c = new Circle(375, y, radius); //create circle
 
         return c; //return new circle
     }//render
 
     /**
      * Renders the circle
-     *
-     * @return the circle to be rendered to screen
      */
-    Circle render(){
+    void render(){
         this.x += (speed * direction.getXDir());//updates x
         this.y += (speed * direction.getYDir());//updates y
 
         c.setCenterX(this.x); //set location
         c.setCenterY(this.y);
 
-        return c; //return circle object
     }//render
 
     /**

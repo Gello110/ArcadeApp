@@ -1,6 +1,5 @@
 package cs1302.arcade;
 
-import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
 import javafx.scene.Scene;
 import javafx.scene.effect.Light;
@@ -17,7 +16,7 @@ import javafx.util.Duration;
 /**
  * The start screen displayed to the player when they first open the application
  */
-public class StartScene extends Scene {
+class StartScene extends Scene {
 
     public StartScene() {
 		super(new StackPane());

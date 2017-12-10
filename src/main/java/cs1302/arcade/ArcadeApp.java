@@ -60,12 +60,12 @@ public class ArcadeApp extends Application {
         Timeline timeline = new Timeline();
         EventHandler<ActionEvent> handler = event -> {
             if(game.isOver()) {
-                game.updateScene(scene);
+                game.updateScene();
                 timeline.stop();
                 return;
             }
 
-            game.updateScene(scene);
+            game.updateScene();
         };
         KeyFrame keyFrame = new KeyFrame(Duration.millis(17), handler);
 

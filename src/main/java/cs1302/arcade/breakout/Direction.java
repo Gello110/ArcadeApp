@@ -4,9 +4,9 @@ class Direction {
     private int xDir;
     private int yDir;
 
-    Direction(int xDir, int yDir ) {
-        this.xDir = xDir;
-        this.yDir = yDir;
+    Direction() {
+        this.xDir = 2;
+        this.yDir = -2;
     }
 
     void multDir(int x, int y) {

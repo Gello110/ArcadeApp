@@ -7,8 +7,8 @@ import javafx.scene.shape.Rectangle;
  * Makes a block to be broken in Breakout game
  */
 class Block {
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     private int x;
     private int y;
     private Rectangle r;
@@ -18,12 +18,10 @@ class Block {
     /**
      * Constructs a Block object
      *
-     * @param width  the width of the block
-     * @param height the height of the block
      */
-    Block(int width, int height, int level) {
-        this.width = width;
-        this.height = height;
+    Block(int level) {
+        this.width = 50;
+        this.height = 20;
 
         for (BlockType blockType : BlockType.values()) {
             if (blockType.ordinal() == level)
@@ -128,8 +126,8 @@ class Block {
         GREEM(3, Color.GREEN),
         YELLOW(1, Color.YELLOW);
 
-        private int score;
-        private Color color;
+        private final int score;
+        private final Color color;
 
         /**
          * Creates a BlockType
@@ -156,7 +154,7 @@ class Block {
          *
          * @return the color of this block type
          */
-        public Color getColor() {
+        Color getColor() {
             return color;
         }
     }

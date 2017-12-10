@@ -7,8 +7,8 @@ public class Cell{
     private CellType type;
     private CellType state;
     private boolean isChecked;
-	private int row;
-	private int col;
+	private final int row;
+	private final int col;
     
     /** 
      *  Constructs a cell object
@@ -87,7 +87,7 @@ public class Cell{
     /**
      *  Returns if the cell has been looked at
      *
-     *  @returns <code>true</code>if has been looked at
+     *  @return <code>true</code>if has been looked at
      */
     public boolean getIsChecked(){
 		return isChecked;

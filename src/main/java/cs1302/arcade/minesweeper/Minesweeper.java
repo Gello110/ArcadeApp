@@ -1,31 +1,31 @@
 package cs1302.arcade.minesweeper;
 
-import java.util.Set;
-import java.util.HashSet;
-
 import cs1302.arcade.ArcadeApp;
+import cs1302.arcade.Game;
 import cs1302.arcade.GameChoiceScene;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.image.ImageView;
-import javafx.geometry.Pos;
-import cs1302.arcade.Game;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -36,15 +36,16 @@ public class Minesweeper extends Game{
     private static final int GAME_COLUMNS = 16;
     private static final int GAME_ROWS = 16;
 
-    private Board gameBoard; //Board containing all the game logic and cells
+    private final Board gameBoard; //Board containing all the game logic and cells
     private Text minesLeft; //Text displaying the mines left
     private Text time; //Text displaying the time the player has been playing
     private GridPane gPane;//GridPane containing th cells of the game
     private int timer;//Seconds since game has started
-    private ArcadeApp app;
+    private final ArcadeApp app;
     private Timeline timing;//timer for the game
+    private boolean started;
 
-    private Set<Cell> cellsChanged; //Set containing the cells changed since the last update of the screen
+    private final Set<Cell> cellsChanged; //Set containing the cells changed since the last update of the screen
 
     /**
      *  Constructs a minesweeper game
@@ -65,30 +66,38 @@ public class Minesweeper extends Game{
         BorderPane bPane = new BorderPane(); //Will contain the scores
 
         minesLeft = new Text(String.format("%03d", gameBoard.getMinesLeft())); //The mines left to be found
-        minesLeft.setFont(Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toString(), 30));
         Button newGame = new Button("New Game"); //Button player clicks to start a new game.
+        Button change = new Button("Switch Game"); //Button player clicks to switch games
         time = new Text(String.format("%03d", timer)); //The time spent playing the game
-        time.setFont(Font.loadFont( getClass().getClassLoader().getResource("digital.ttf").toString(), 30));
-        Button change = new Button("Switch Game");
+
+        Font digital = Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toString(), 30);
+
+        if(digital != null) { //make sure font exists
+            minesLeft.setFont(digital); //set fonts
+            time.setFont(digital);
+        }
+
+        newGame.setOnAction(action -> app.setCurrentGame(new Minesweeper(app))); //Reset board for new game
         change.setOnAction(e -> {
-            app.setCurrentScene(new GameChoiceScene(app));
-            gameBoard.end();
+            app.setCurrentScene(new GameChoiceScene(app)); //switch back to game choice scene
+            gameBoard.end(); //end current iteration of this game
         });
-        HBox buttons = new HBox(20);
-        buttons.getChildren().addAll(newGame, change);
-        buttons.setAlignment(Pos.CENTER);
+
+        HBox buttons = new HBox(20); //HBox for buttons
+        buttons.getChildren().addAll(newGame, change); //add buttons
+        buttons.setAlignment(Pos.CENTER); //set alignment
 
         //makes keyframe
         timing = new Timeline();
         KeyFrame keyframe = new KeyFrame(Duration.seconds(1), e -> {
-            timer++;
-            Platform.runLater(() -> time.setText(String.format("%03d", timer)));  //Display time to player
+            if(started) { //if game started, start counting
+                timer++;
+                Platform.runLater(() -> time.setText(String.format("%03d", timer)));  //Display time to player
+            }
         });
         timing.setCycleCount(999); //Only 999 seconds displayed
         timing.getKeyFrames().add(keyframe);
         timing.play();
-
-        newGame.setOnAction(action -> app.setCurrentGame(new Minesweeper(app))); //Reset board for new game
 
         bPane.setRight(minesLeft); //Set position
         bPane.setCenter(buttons);
@@ -177,7 +186,7 @@ public class Minesweeper extends Game{
     }//endGame
 
     @Override
-    public void updateScene(Scene scene){
+    public void updateScene(){
         for(Cell c: cellsChanged){//replaces all the changed cells
             ImageView newImage = new ImageView(c.getState().getImage());
             newImage.setFitWidth(30);
@@ -209,6 +218,9 @@ public class Minesweeper extends Game{
         if(action.getButton() == null || action.getButton() == MouseButton.NONE || action.getButton() == MouseButton.MIDDLE)
             return;
 
+        if(!started)
+            started = true; //player has started
+
         if(action.getButton() == MouseButton.PRIMARY) { //Left Click
             if(cell.getState() == CellType.FLAGGED)
                 return;
@@ -223,7 +235,7 @@ public class Minesweeper extends Game{
             }
         }
 
-        cellsChanged.add(cell);
+        cellsChanged.add(cell); //add this cell to list of changed cells to be updated
     }
 
 

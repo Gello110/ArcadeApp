@@ -5,26 +5,23 @@ import javafx.scene.shape.Rectangle;
 /**
  * represents a paddle that the player interacts with
  */
-public class Paddle{
+class Paddle{
     private int width;
-    private int height;
+    private final int height;
     private int x;
     private int y;
     private Rectangle paddle;
-    private Breakout game;
+    private final Breakout game;
     private boolean shrunk;
 
     /**
      *  Makes a new paddle object
      *
-     * @param width  width of the paddle
-     * @param height  height of the paddle
-     * @param game  the breakout game
-     */
-     Paddle(int width, int height, Breakout game){
+     * @param game  the breakout game*/
+     Paddle(Breakout game){
         this.game = game;
-        this.height = height;
-        this.width = width;
+        this.height = 20;
+        this.width = 150;
     }//Paddle
 
     /**
@@ -59,15 +56,6 @@ public class Paddle{
 
             paddle.setWidth(width);
         }
-    }
-
-    /**
-     * returns the x position of the paddle
-     *
-     * @return the x position of the paddle
-     */
-    public int getX() {
-        return x;
     }
 
     /**

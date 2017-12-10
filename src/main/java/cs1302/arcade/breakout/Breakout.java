@@ -25,7 +25,7 @@ public class Breakout extends Game{
     private static final int HEIGHT = 600;
     private static final int WIDTH = 750;
 
-    private ArcadeApp app;
+    private final ArcadeApp app;
     private Block[][] blocks;
     private Paddle paddle;
     private Ball ball;
@@ -113,7 +113,7 @@ public class Breakout extends Game{
         displayBlocks();
 
         //renders the paddle to the screen
-        paddle = new Paddle(150, 20, this);
+        paddle = new Paddle(this);
         pane.getChildren().add(paddle.render(275, HEIGHT - 50));
 
         //handles input from the player to move the paddle
@@ -143,7 +143,7 @@ public class Breakout extends Game{
     }//init Scene
 
     @Override
-    public void updateScene(Scene scene){
+    public void updateScene(){
         if(ended) return; //Game has ended, stop updating
 
         if(rightPressed) { //right key is pressed, move right
@@ -219,7 +219,7 @@ public class Breakout extends Game{
 
         for(int i = 0; i < blocks.length; i++){ //Iterate through blocks
             for(int j = 0; j < blocks[0].length; j++){
-                blocks[i][j] = new Block(50, 20, blockType); //set the block with height 20 and width 50
+                blocks[i][j] = new Block(blockType); //set the block with height 20 and width 50
             }//for j
 
             if((i + 1) % increment == 0) { //add blocktype if specified increment is reached
@@ -253,8 +253,8 @@ public class Breakout extends Game{
      * makes a new ball
      */
     private void newBall(){
-        ball = new Ball(7, 2); //creates ball with radius of 7 and speed of 2
-        pane.getChildren().add(ball.render(375, HEIGHT - 100)); //add ball to scene
+        ball = new Ball(); //creates ball with radius of 7 and speed of 2
+        pane.getChildren().add(ball.render(HEIGHT - 100)); //add ball to scene
 
     }//newBall
 

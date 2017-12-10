@@ -1,17 +1,18 @@
 package cs1302.arcade.minesweeper;
 
-import java.util.Random;
 import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *  Class that represents a board of cells for minesweeper
  */
-public class Board {
+class Board {
     private int round;
-    private Cell[][] board;
-	private int mines;
-    private Minesweeper game;
+    private final Cell[][] board;
+	private final int mines;
+    private final Minesweeper game;
     private boolean over;
     
     /**
@@ -85,25 +86,24 @@ public class Board {
      *
      *  @param row  t if(flagging){he row of the cell to be revealed
      *  @param col  the columm of the cell to be revealed
-     *  @return the picture to show to the user
      *  @param player <code>true</code> if called non-recursively
-     */
-    ImageView reveal(int row, int col, boolean player){
+	 */
+    void reveal(int row, int col, boolean player){
         if(row < 0 || col < 0 || row > board.length - 1 || col > board[0].length - 1)
-            return null;
+            return;
 
         Cell c = board[row][col];
 
         if(c.getIsChecked()
 		   || c.getType().equals(CellType.MINE)
 		   && !player){
-			return null;
+			return;
 
 		}//if row, col is out of bounds or if the cell is a mine
 
 		if(c.getType().equals(CellType.MINE)){
 		    lose(c);
-			return null;
+			return;
 		}//if player initiated and a mine
 
 		c.check();//reveals current board
@@ -135,8 +135,7 @@ public class Board {
 			win();
 		}
 
-		return toReturn;
-    }//reveal
+	}//reveal
 
     /**
      *  Called when player reveals a mine and loses the game
@@ -187,23 +186,21 @@ public class Board {
      *
      *  @param row  the row of the cell to be flagged
      *  @param col the column of the cell to be flagged
-     *  @return the picture to show the user
      */
-     ImageView flag(int row, int col){
+     void flag(int row, int col){
     	newRound();
-		return new ImageView(board[row][col].change(true).getImage());
-    }//flag
+		 new ImageView(board[row][col].change(true).getImage());
+	 }//flag
 
     /**
      *  unflags the cell at the row, col 
      *
      *  @param row the row of the cell to unflag
      *  @param col the column of the cell to unflag
-     *  @return the image to show the user
      */
-    public ImageView unflag(int row, int col){
+    public void unflag(int row, int col){
         newRound();
-		return new ImageView(board[row][col].change(false).getImage());
+		new ImageView(board[row][col].change(false).getImage());
 	}//unflag
 
 	/**
@@ -223,7 +220,7 @@ public class Board {
 	 *
 	 * @return The total number of flags placed
 	 */
-	public int getFlagged() {
+	private int getFlagged() {
     	int flagged = 0;
 
     	for(Cell[] cellRow : board) { //Iterate through cells
@@ -241,7 +238,7 @@ public class Board {
 	 *
 	 * @return The amount of mines on the board
 	 */
-	public int getMines() {
+	private int getMines() {
     	return mines;
 	}
 
@@ -275,7 +272,7 @@ public class Board {
 	/**
 	 * Ends the game forcefully. Used for switching to a different game.
 	 */
-	protected  void end() {
+	void end() {
 		over = true;
 	}
 

@@ -21,8 +21,8 @@ public enum CellType{
 	WRONG(9, "minesweeper_wrong_flag.jpg"),
 	HIT(10, "minesweeper_bomb_hit.jpg");
 
-    private int type;
-    private Image pic;
+    private final int type;
+    private final Image pic;
 
     /**
      *  Contructs a CellType
@@ -40,7 +40,7 @@ public enum CellType{
      *
      *  @return the type of cell
      */
-    public int getType(){
+	private int getType(){
 		return type;
     }//
 

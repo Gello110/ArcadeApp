@@ -7,7 +7,7 @@ import javafx.scene.Scene;
  */
 public abstract class Game {
 
-    private String name;
+    private final String name;
     private int score;
 
     /**
@@ -15,7 +15,7 @@ public abstract class Game {
      *
      * @param name The name of the game.
      */
-    public Game(String name) {
+    protected Game(String name) {
         this.name = name; // Set game name
     }
 
@@ -29,9 +29,8 @@ public abstract class Game {
     /**
      * Updates the scene that is displayed to the player.
      *
-     * @param scene The scene the player sees
      */
-    public abstract void updateScene(Scene scene);
+    public abstract void updateScene();
 
     /**
      * Checks whether the game has ended.
@@ -45,17 +44,8 @@ public abstract class Game {
      *
      * @return The score of the game.
      */
-    public int getScore() {
+    protected int getScore() {
         return this.score;
-    }
-
-    /**
-     * Sets the score for the current game.
-     *
-     * @param score The score to set.
-     */
-    protected void setScore(int score) {
-        this.score = score;
     }
 
     /**
