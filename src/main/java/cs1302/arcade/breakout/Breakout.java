@@ -25,7 +25,6 @@ public class Breakout extends Game{
     private static final int HEIGHT = 600;
     private static final int WIDTH = 750;
 
-    private ArcadeApp app;
     private Block[][] blocks;
     private Paddle paddle;
     private Ball ball;
@@ -46,13 +45,11 @@ public class Breakout extends Game{
      *  Constructs a breakout game
      */
     public Breakout(ArcadeApp app){
-        super("Breakout");
+        super("Breakout", app);
 
         lives = 3;
         //initialises the array of blocks to be broken
         createLevel(1, 4, 1);
-
-        this.app = app;
     }//Breakout
 
     @Override

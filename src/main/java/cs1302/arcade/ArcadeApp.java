@@ -1,6 +1,7 @@
 
 package cs1302.arcade;
 
+import cs1302.arcade.scores.Scores;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -16,11 +17,13 @@ import javafx.util.Duration;
 public class ArcadeApp extends Application {
 
     private Stage stage;
+    private Scores scores;
     private boolean isShown;
 
     @Override
     public void start(Stage stage) {
         this.stage = stage;
+        this.scores = new Scores();
 
         stage.setTitle("Arcade");
 
@@ -72,6 +75,15 @@ public class ArcadeApp extends Application {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
+    }
+
+    /**
+     * Gets the score handler for this arcade
+     *
+     * @return The Scores object that handles scores
+     */
+    public Scores getScoreHandler() {
+        return this.scores;
     }
 
     /**
