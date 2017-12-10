@@ -3,6 +3,7 @@ package cs1302.arcade.scores;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -70,34 +71,62 @@ public class Scores {
      */
     public void diplayScores(){
         Stage s = new Stage();
-        VBox vbox = new VBox(10);
+        VBox outerbox = new VBox(20);
+        VBox bBox = new VBox(10);
+        VBox mBox = new VBox(10);
         HBox hBox = new HBox(10);
-        vbox.setAlignment(Pos.CENTER);
+        outerbox.setAlignment(Pos.CENTER);
 
         //breakout scores
-        TableColumn<Entry, String> bname = new TableColumn<>("Name");
-        bname.setCellValueFactory(new PropertyValueFactory<Entry, String>("name"));
-        TableColumn<Entry, Integer> bscore = new TableColumn<>("Score");
-        bscore.setCellValueFactory(new PropertyValueFactory<Entry, Integer>("score"));
+        TableColumn<Entry, String> bName = new TableColumn<>("Name");
+        bName.setCellValueFactory(new PropertyValueFactory<Entry, String>("name"));
+        bName.setMinWidth(150);
+        TableColumn<Entry, Integer> bScore = new TableColumn<>("Score");
+        bScore.setCellValueFactory(new PropertyValueFactory<Entry, Integer>("score"));
+        bScore.setMinWidth(150);
 
+        TableView<Entry> bTable = new TableView<>();//table of breakout scores
+        bTable.getColumns().addAll(bName, bScore);
+        bTable.setItems(FXCollections.observableArrayList(bScores));
 
-        bname.setMinWidth(150);
-        bscore.setMinWidth(150);
+        Text bTitle = new Text("Breakout Scores");
+        bTitle.setFont(new Font(20));
 
-        TableView<Entry> btable = new TableView<>();//table of breakout scores
-        btable.getColumns().addAll(bname, bscore);
-        btable.setItems(FXCollections.observableArrayList(bScores));
+        bBox.getChildren().addAll(bTitle, bTable);
 
+        //minesweeper scores
+        TableColumn<Entry, String> mName = new TableColumn<>("Name");
+        mName.setCellValueFactory(new PropertyValueFactory<Entry, String>("name"));
+        mName.setMinWidth(150);
+        TableColumn<Entry, Integer> mScore = new TableColumn<>("Score");
+        mScore.setCellValueFactory(new PropertyValueFactory<Entry, Integer>("score"));
+        mScore.setMinWidth(150);
 
+        TableView<Entry> mTable = new TableView<>();//table of minesweeper scores
+        mTable.getColumns().addAll(mName, mScore);
+        mTable.setItems(FXCollections.observableArrayList(mScores));
 
+        Text mTitle =  new Text("Minesweeper Scores");
+        mTitle.setFont(new Font(20));
 
+        mBox.getChildren().addAll(mTitle, mTable);
+
+        //prepares outerbox
+        hBox.getChildren().addAll(bBox, mBox);
         Text title = new Text("High Scores");
         title.setFont(new Font(30));
+        outerbox.getChildren().addAll(title, hBox);
 
-        vbox.getChildren().addAll(title, btable);
+        //prepares stage
+        Scene scene = new Scene(outerbox);
+        s.setScene(scene);
+        s.initModality(Modality.APPLICATION_MODAL);
+        s.sizeToScene();
+        s.setResizable(false);
+        s.show();
 
 
-    }
+    }//displayScores
 
     /**
      * adds score to list
