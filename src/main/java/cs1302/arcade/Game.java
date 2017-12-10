@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 public abstract class Game {
 
     private final String name;
-    private String name;
     protected ArcadeApp app;
     private int score;
 
