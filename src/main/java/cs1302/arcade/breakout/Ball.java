@@ -61,10 +61,10 @@ class Ball {
 
         switch (brokenBlocks) {
             case 4:
-                speed += .25;
+                multiplySpeed(.05);
                 break;
             case 12:
-                speed += .5;
+                multiplySpeed(.1);
         }
     }
 
@@ -73,7 +73,7 @@ class Ball {
      */
     void hitOrange() {
         if(!hitOrange) {
-            multiplySpeed(.10);
+            multiplySpeed(.1);
             hitOrange = true;
         }
     }

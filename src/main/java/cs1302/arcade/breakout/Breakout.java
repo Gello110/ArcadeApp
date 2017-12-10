@@ -235,14 +235,14 @@ public class Breakout extends Game{
      * Displays the blocks to the screen
      */
     private void displayBlocks() {
-        int xPlace = 3;
+        int xPlace = 5;
         int yPlace = 100;
         for(Block[] row: blocks){
             for(Block block: row){
                 pane.getChildren().add(block.render(xPlace, yPlace));
                 xPlace += 53;
             }//for row
-            xPlace = 3;
+            xPlace = 5;
             yPlace += 23;
         }//for blocks
     }
@@ -257,7 +257,7 @@ public class Breakout extends Game{
      */
     private void newBall(){
         dir = BallDir.NE;
-        ball = new Ball(10, 2);
+        ball = new Ball(7, 2);
         pane.getChildren().add(ball.render(375, HEIGHT - 100));
 
     }//newBall
@@ -278,9 +278,8 @@ public class Breakout extends Game{
      */
     private void endGame(boolean won){
         ended = true;
-
-
         Text message = new Text(); //Message to display
+
         if(won){
             message.setText("Congrats\nYou Won\nScore: " + getScore()); //Show win message
         }else{
