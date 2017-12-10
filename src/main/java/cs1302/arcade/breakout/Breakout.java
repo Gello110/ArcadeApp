@@ -32,7 +32,6 @@ public class Breakout extends Game{
     private int level;
     private int lives;
     private int blocksDestroyed;
-    private BallDir dir;//trajectory of the ball
     private Pane pane;
     private Text life;
     private Text currLevel;
@@ -66,13 +65,14 @@ public class Breakout extends Game{
         //creates the score and level to be shown to player
         Font font = Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toString(), 35);
         score = new Text(String.format("%04d", getScore()));
-        score.setFont(font);
         currLevel = new Text(String.format("%02d", level));
-        currLevel.setFont(font);
         life = new Text(String.format("%01d", lives));
+
+        score.setFont(font); //sets the fonts
+        currLevel.setFont(font);
         life.setFont(font);
 
-        stats.setCenter(life);
+        stats.setCenter(life); //sets location of stats
         stats.setLeft(currLevel);
         stats.setRight(score);
 
@@ -117,97 +117,91 @@ public class Breakout extends Game{
         pane.getChildren().add(paddle.render(275, HEIGHT - 50));
 
         //handles input from the player to move the paddle
-        scene.setOnKeyPressed(e -> {
-            if(e.getCode() == KeyCode.RIGHT) {
-                rightPressed = true;
+        scene.setOnKeyPressed(e -> { //handles key pressed down
+            if(e.getCode() == KeyCode.RIGHT) { //right key pressed
+                rightPressed = true; //notify right pressed and ignore left
                 leftPressed = false;
-            }else if(e.getCode() == KeyCode.LEFT){
-                rightPressed = false;
+            }else if(e.getCode() == KeyCode.LEFT){ //left key pressed
+                rightPressed = false; //notify left and ignore right
                 leftPressed = true;
             }
         });
 
-        scene.setOnKeyReleased(e -> {
-            if(e.getCode() == KeyCode.LEFT) {
+        scene.setOnKeyReleased(e -> { //handles key released
+            if(e.getCode() == KeyCode.LEFT) { //left key unpressed
                 leftPressed = false;
-            }else if(e.getCode() == KeyCode.RIGHT){
+            }else if(e.getCode() == KeyCode.RIGHT){ //right key unpressed
                 rightPressed = false;
             }
         });
 
-        newBall();
+        newBall(); //spawn first ball
 
-        parent.getChildren().addAll(bar, stats, pane);
+        parent.getChildren().addAll(bar, stats, pane); //add everything to pane
 
         return scene;
     }//init Scene
 
     @Override
     public void updateScene(Scene scene){
-        if(ended) return;
+        if(ended) return; //Game has ended, stop updating
 
-        if(rightPressed) {
+        if(rightPressed) { //right key is pressed, move right
             paddle.render(15,0);
-        } else if(leftPressed) {
+        } else if(leftPressed) { //left key is pressed, move left
             paddle.render(-15, 0);
         }
 
-
         boolean hit = false;
         //checks of ball had hit any blocks
-        for(Block[] row: blocks){
+        for(Block[] row: blocks){ //iterate through blocks
             for(Block block: row){
-                if(hitBlock(block)) {
-                    ball.addBlockBroken();
+                if(hitBlock(block)) { //check if block is hit by the ball
+                    ball.addBlockBroken(); //add to number of blocks this ball has broken
 
                     if(block.getType() == Block.BlockType.ORANGE) {
-                        ball.hitOrange();
+                        ball.hitOrange(); //notify ball has hit orange, for possible speed increase
                     } else if(block.getType() == Block.BlockType.RED) {
-                        ball.hitRed();
+                        ball.hitRed(); //notify ball has hit red, for possible speed increase
                     }
 
-                    hit = true;
-                    blocksDestroyed++;
+                    hit = true; //block has been hit
+                    blocksDestroyed++; //add to total blocks destroyed
                     break;
                 }
             }
         }
 
-        if(hit) {
-            if(blocksDestroyed >= (blocks.length * blocks[0].length)) {
-                if(level == 1) {
-                    blocksDestroyed = 0;
+        if(hit) { //if a block has been hit
+            if(blocksDestroyed >= (blocks.length * blocks[0].length)) { //if all blocks have been hit
+                if(level == 1) { //if level is level 1, create level 2
+                    blocksDestroyed = 0; //reset total blocks destroyed
 
                     pane.getChildren().remove(ball.getC());//removes ball from screen
-                    createLevel(2, 8, 2);
-                    displayBlocks();
-                    newBall();
-                } else endGame(true);
+                    createLevel(2, 8, 2); //creates level 2
+                    displayBlocks(); //displays blocks
+                    newBall(); //creates new ball
+                } else endGame(true); //end game, player has won
 
-                currLevel.setText(String.format("%02d", level));
+                currLevel.setText(String.format("%02d", level)); //update level text
                 return;
             }
         }else{
             //checks if ball has hit sides of window
-            hitLeft();
-            hitRight();
+            hitSides();
             hitUp();
             hitBottom();
         }
 
         //checks if hit paddle
         if(ball.getY() + ball.getRadius() > paddle.getY()
-                && ball.getC().getBoundsInParent().intersects(paddle.getPaddle().getBoundsInParent())){
-            if(dir == BallDir.SE){//if ball is moving left
-                dir = BallDir.NE;
-            }else if(dir == BallDir.SW){//if ball is moving right
-                dir = BallDir.NW;
-            }
+                && ball.getC().getBoundsInParent().intersects(paddle.getPaddle().getBoundsInParent()) && ball.getDirection().isS()){
+            ball.changeDirection(1, -1); //bounce back up
         }
 
-        score.setText(String.format("%04d", getScore()));
+        score.setText(String.format("%04d", getScore())); //update score text
 
-        ball.render(dir);//changes position of the ball
+        ball.render();//changes position of the ball
 
     }//updateScene
 
@@ -219,16 +213,16 @@ public class Breakout extends Game{
      * @param increment The number of rows that are a certain type
      */
     private void createLevel(int level, int rows, int increment) {
-        this.level = level;
-        blocks = new Block[rows][14];
-        int blockType = 0;
+        this.level = level; //set level
+        blocks = new Block[rows][14]; //create block array representing blocks with specified number of rows and 14 columns
+        int blockType = 0; //Keeps track of block type for different block types
 
-        for(int i = 0; i < blocks.length; i++){
+        for(int i = 0; i < blocks.length; i++){ //Iterate through blocks
             for(int j = 0; j < blocks[0].length; j++){
-                blocks[i][j] = new Block(50, 20, blockType);
+                blocks[i][j] = new Block(50, 20, blockType); //set the block with height 20 and width 50
             }//for j
 
-            if((i + 1) % increment == 0) {
+            if((i + 1) % increment == 0) { //add blocktype if specified increment is reached
                 blockType++;
             }
         }//for i
@@ -238,15 +232,15 @@ public class Breakout extends Game{
      * Displays the blocks to the screen
      */
     private void displayBlocks() {
-        int xPlace = 5;
-        int yPlace = 100;
-        for(Block[] row: blocks){
+        int xPlace = 5; //X coord on screen blocks start at
+        int yPlace = 100; //Y coord on screen blocks start at
+        for(Block[] row: blocks){ //iterate through the blocks
             for(Block block: row){
-                pane.getChildren().add(block.render(xPlace, yPlace));
-                xPlace += 53;
+                pane.getChildren().add(block.render(xPlace, yPlace)); //add the block at its position
+                xPlace += 53; //add to x coord position (width plus spacing)
             }//for row
-            xPlace = 5;
-            yPlace += 23;
+            xPlace = 5; //reset x coord start
+            yPlace += 23; //add to y coord position (height plus spacing)
         }//for blocks
     }
 
@@ -259,9 +253,8 @@ public class Breakout extends Game{
      * makes a new ball
      */
     private void newBall(){
-        dir = BallDir.NE;
-        ball = new Ball(7, 2);
-        pane.getChildren().add(ball.render(375, HEIGHT - 100));
+        ball = new Ball(7, 2); //creates ball with radius of 7 and speed of 2
+        pane.getChildren().add(ball.render(375, HEIGHT - 100)); //add ball to scene
 
     }//newBall
 
@@ -308,17 +301,13 @@ public class Breakout extends Game{
     }//gameEnded
 
     /**
-     * changes direction of the ball hits uppoer border
+     * changes direction of the ball hits uppoe border
      */
     private void hitUp(){
-        if(ball.getY() - ball.getRadius() <= 0){
-            if(dir == BallDir.NE){//if ball is moving left
-                dir = BallDir.SE;
-            }else if(dir == BallDir.NW){//if ball is moving right
-                dir = BallDir.SW;
-            }
+        if(ball.getY() - ball.getRadius() <= 0 && ball.getDirection().isN()){
+            ball.changeDirection(1, -1);
 
-            paddle.shrink();
+            paddle.shrink(); //shrink paddle
         }
     }//hitUp
 
@@ -326,44 +315,28 @@ public class Breakout extends Game{
      * changes round if ball hits bottom of border
      */
     private void hitBottom(){
-        if(ball.getY() + ball.getRadius() >= HEIGHT){
-            lives--;
+        if(ball.getY() + ball.getRadius() >= HEIGHT){ //ball is under bottom
+            lives--; //subtract lives
             pane.getChildren().remove(ball.getC());//removes ball from screen
-            life.setText(String.format("%01d", lives));
+            life.setText(String.format("%01d", lives)); //update text displaying lives
 
-            if(lives == 0) {
-                endGame(false);
+            if(lives == 0) { //If no lives left
+                endGame(false); //end the game
                 return;
             }
-            newBall();
+
+            newBall(); //Spawn a new ball
         }
     }//hit bottom
 
     /**
-     * changes direction of the ball if it hits left border
+     * changes direction of the ball if it hits either the left or right border
      */
-    private void hitLeft(){
-        if(ball.getX() - ball.getRadius() <= 0){
-            if(dir == BallDir.NW){
-                dir = BallDir.NE;
-            }else if(dir == BallDir.SW){
-                dir = BallDir.SE;
-            }
+    private void hitSides(){
+        if((ball.getX() - ball.getRadius() <= 0 && ball.getDirection().isW()) || (ball.getX() + ball.getRadius() >= WIDTH && ball.getDirection().isE())){ //check sides
+            ball.changeDirection(-1, 1); //change x direction
         }
-    }//hit left
-
-    /**
-     * changes direction of the ball if it hits right border
-     */
-    private void hitRight(){
-        if(ball.getX() + ball.getRadius() >= WIDTH){
-            if(dir == BallDir.NE){
-                dir = BallDir.NW;
-            }else if(dir == BallDir.SE){
-                dir = BallDir.SW;
-            }
-        }
-    }//hit right
+    }//hit sides
 
     /**
      * gets rid of block if hit
@@ -371,40 +344,41 @@ public class Breakout extends Game{
      * @return true if the block was hit
      */
     private boolean hitBlock(Block b){
-        if(ball.getC().getBoundsInParent().intersects(b.getR().getBoundsInParent()) && b.getPresent()){
-            if(dir == BallDir.SE || dir == BallDir.SW) { //Coming from the top
-                if(b.getX() < ball.getX() && ball.getX() < b.getX() + b.getWidth()) { //above the block
-                    if(dir == BallDir.SW)
-                        dir = BallDir.NW;
-                    else
-                        dir = BallDir.NE;
-                } else { //At the side of the block
-                    if(dir == BallDir.SW)
-                        dir = BallDir.SE;
-                    else
-                        dir = BallDir.SW;
-                }
-            } else { //Coming from the bottom (SW or SE)
-                if(ball.getY() + ball.getRadius() < b.getY() + b.getHeight() && !(b.getX() < ball.getX() && ball.getX() < b.getX() + b.getWidth())) { //Side of the block
-                    if(dir == BallDir.NE)
-                        dir = BallDir.NW;
-                    else
-                        dir = BallDir.NE;
-                } else { //Below the block
-                    if (dir == BallDir.NE)
-                        dir = BallDir.SE;
-                    else
-                        dir = BallDir.SW;
-                }
+        if(ball.getC().getBoundsInParent().intersects(b.getR().getBoundsInParent()) && b.getPresent()){ //Block and ball intersected
+            int height;
+            int width;
+
+            if(ball.getY() < b.getY()) //ball is above the block
+                height = Math.abs(ball.getY() + ball.getRadius() - b.getY()); //get height from above (doesn't include block height)
+            else
+                height = Math.abs(ball.getY() - ball.getRadius() - (b.getY() + b.getHeight())); //get height from above (does include block height)
+
+            if(ball.getX() < b.getX()) //ball is to the left
+                width = Math.abs(ball.getX() + ball.getRadius() - b.getX()); //get width from left (doesn't include block width)
+            else
+                width = Math.abs(ball.getX() - ball.getRadius() - (b.getX() + b.getWidth())); //get width from right (does include block width)
+
+            boolean dirChanged = false;
+
+            if(width > 3 && width >= height) { //substantial hit on top or bottom (width of intersection is greater than height)
+                ball.changeDirection(1, -1); //change y dir
+                dirChanged = true; //signal direction change
             }
 
-            pane.getChildren().remove(b.getR());
-            b.destroy();
+            if(height > 3 && height >= width){ //substantial hit on left or right (height of intersection is greater than width)
+                ball.changeDirection(-1, 1); //change x dir
+                dirChanged = true; //signal direction change
+            }
 
-            addScore(b.getType().getScore());
-            return true;
+
+            if(dirChanged) { //Direction changed
+                pane.getChildren().remove(b.getR()); //remove block
+                b.destroy();
+
+                addScore(b.getType().getScore()); //add points to score
+                return true; //signal block broken
+            }
         }
-
-        return false;
+        return false; //signal block not broken
     }//hitBlock
 }//Breakout

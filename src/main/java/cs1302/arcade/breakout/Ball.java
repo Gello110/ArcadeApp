@@ -14,15 +14,18 @@ class Ball {
     private int brokenBlocks;
     private boolean hitOrange;
     private boolean hitRed;
+    private Direction direction;
 
     /**
      *  creates a ball object with a radius
      *
      * @param radius  the radius of the ball
+     * @param speed the initial speed of the ball
      */
     Ball(int radius, int speed){
-        this.speed = speed;
-        this.radius = radius;
+        this.speed = speed; //set initial speed
+        this.radius = radius; //set radius
+        this.direction = new Direction(2, -2); //set direction with initial xDir change of 2 and yDir change of -2
     }//Ball
 
     /**
@@ -33,38 +36,59 @@ class Ball {
      * @return the circle to be rendered to the screen
      */
     Circle render(int x, int y){
-        this.x = x;
+        this.x = x; //set new position
         this.y = y;
-        c = new Circle(x, y, radius);
-        return c;
+        this.c = new Circle(x, y, radius); //create circle
+
+        return c; //return new circle
     }//render
 
     /**
+     * Renders the circle
      *
-     * @param b the Direction the ball is going
      * @return the circle to be rendered to screen
      */
-    Circle render(BallDir b){
-        this.x += (speed * b.getX());//updates x
-        this.y += (speed * b.getY());//updates y
+    Circle render(){
+        this.x += (speed * direction.getXDir());//updates x
+        this.y += (speed * direction.getYDir());//updates y
 
-        c.setCenterX(this.x);
+        c.setCenterX(this.x); //set location
         c.setCenterY(this.y);
-        return c;
+
+        return c; //return circle object
     }//render
+
+    /**
+     * Change the direction of the ball using 1 or -1
+     *
+     * @param x integer to multiply x direction by
+     * @param y integer to multiply y direction by
+     */
+    void changeDirection(int x, int y) {
+        direction.multDir(x, y); //multiple direction
+    }
+
+    /**
+     * Gets the direction of the ball
+     *
+     * @return a {@link Direction} Object representing the direction of this ball
+     */
+    Direction getDirection() {
+        return this.direction;
+    }
 
     /**
      * Add to the number of blocks broken. Used to speed up the ball.
      */
     void addBlockBroken() {
-        brokenBlocks++;
+        brokenBlocks++; //add to broken blocks
 
         switch (brokenBlocks) {
-            case 4:
-                multiplySpeed(.05);
+            case 4: //four blocks broken
+                multiplySpeed(.05); //increase speed by 5%
                 break;
-            case 12:
-                multiplySpeed(.1);
+            case 12: //twelve blocks broken
+                multiplySpeed(.1); //increase speed by 10%
         }
     }
 
@@ -72,9 +96,9 @@ class Ball {
      * Notify that the ball has hit an orange block
      */
     void hitOrange() {
-        if(!hitOrange) {
-            multiplySpeed(.1);
-            hitOrange = true;
+        if(!hitOrange) { //if hasn't hit orange before
+            multiplySpeed(.1); //increase speed by 10%
+            hitOrange = true; //set to true, orange has been hit
         }
     }
 
@@ -82,9 +106,9 @@ class Ball {
      * Notify that the ball has hit a red block
      */
     void hitRed() {
-        if(!hitRed) {
-            multiplySpeed(.15);
-            hitRed = true;
+        if(!hitRed) { //if hasn't hit red before
+            multiplySpeed(.15); //increase speed by 15%
+            hitRed = true; //set to true, red has been hit
         }
     }
 

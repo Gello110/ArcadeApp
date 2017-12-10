@@ -16,29 +16,29 @@ class Block {
     private BlockType type;
 
     /**
-     *  Constructs a Block object
+     * Constructs a Block object
      *
      * @param width  the width of the block
-     * @param height  the height of the block
+     * @param height the height of the block
      */
-     Block(int width, int height, int level){
+    Block(int width, int height, int level) {
         this.width = width;
         this.height = height;
 
-        for(BlockType blockType : BlockType.values()) {
-            if(blockType.ordinal() == level)
+        for (BlockType blockType : BlockType.values()) {
+            if (blockType.ordinal() == level)
                 type = blockType;
         }
     }//Block
 
     /**
-     *  returns a rectangle to be rendered to the screen
+     * returns a rectangle to be rendered to the screen
      *
-     * @param x  x coordinate of the rectangle
-     * @param y  y coordinate of the rectangle
+     * @param x x coordinate of the rectangle
+     * @param y y coordinate of the rectangle
      * @return the rectangle to render to screen
      */
-     Rectangle render(int x, int y) {
+    Rectangle render(int x, int y) {
         present = true;
         this.x = x;
         this.y = y;
@@ -54,7 +54,7 @@ class Block {
      *
      * @return the x position of the block
      */
-     int getX() {
+    int getX() {
         return x;
     }
 
@@ -63,7 +63,7 @@ class Block {
      *
      * @return the y position of the block
      */
-     int getY() {
+    int getY() {
         return y;
     }
 
@@ -72,7 +72,7 @@ class Block {
      *
      * @return the height of the block
      */
-     int getHeight() {
+    int getHeight() {
         return height;
     }
 
@@ -81,7 +81,7 @@ class Block {
      *
      * @return the width of the block
      */
-     int getWidth() {
+    int getWidth() {
         return width;
     }
 
@@ -90,7 +90,7 @@ class Block {
      *
      * @return the rectangle representing the block
      */
-     Rectangle getR() {
+    Rectangle getR() {
         return r;
     }//getR
 
@@ -99,14 +99,14 @@ class Block {
      *
      * @return wheter or not block is on screen
      */
-     boolean getPresent(){
+    boolean getPresent() {
         return present;
     }//getPresent
 
     /**
      * breaks the block and keeps it from being hit again
      */
-     void destroy(){
+    void destroy() {
         present = false;
     }//break
 
@@ -116,7 +116,7 @@ class Block {
      * @return a BlockType representing the type of this block
      */
     BlockType getType() {
-         return this.type;
+        return this.type;
     }
 
     /**
@@ -128,8 +128,8 @@ class Block {
         GREEM(3, Color.GREEN),
         YELLOW(1, Color.YELLOW);
 
-         private int score;
-         private Color color;
+        private int score;
+        private Color color;
 
         /**
          * Creates a BlockType
@@ -137,10 +137,10 @@ class Block {
          * @param score The points this type adds to score when broken
          * @param color The color of this block type
          */
-         BlockType(int score, Color color) {
-             this.color = color;
-             this.score = score;
-         }
+        BlockType(int score, Color color) {
+            this.color = color;
+            this.score = score;
+        }
 
         /**
          * Gets the score breaking this block type earns
