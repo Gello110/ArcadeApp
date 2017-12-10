@@ -96,6 +96,7 @@ public class Scores {
         Text bTitle = new Text("Breakout Scores");
         bTitle.setFont(new Font(20));
 
+        bBox.setAlignment(Pos.CENTER);
         bBox.getChildren().addAll(bTitle, bTable);
 
         //minesweeper scores
@@ -113,6 +114,7 @@ public class Scores {
         Text mTitle =  new Text("Minesweeper Scores");
         mTitle.setFont(new Font(20));
 
+        mBox.setAlignment(Pos.CENTER);
         mBox.getChildren().addAll(mTitle, mTable);
 
         //prepares outerbox
