@@ -77,7 +77,10 @@ public class Breakout extends Game{
         Menu game = new Menu("Game");
         //menu item  for new game
         MenuItem newGame = new MenuItem("_New Game");
-        newGame.setOnAction(e -> app.setCurrentGame(new Breakout(app)));//resets the game
+        newGame.setOnAction(e -> {
+            app.setCurrentGame(new Breakout(app));
+            ended = true;//ends current game
+        });//resets the game
 
         //menuItem to return to switch games
         MenuItem sGame = new MenuItem("_Switch Game");//menuItem to return to game select screen
