@@ -5,6 +5,7 @@ import cs1302.arcade.minesweeper.Minesweeper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -19,16 +20,16 @@ import javafx.scene.layout.VBox;
 public class GameChoiceScene extends Scene {
 
     private ArcadeApp mainClass;
-    private StackPane parent;
+    private VBox parent;
     /**
      * Constructs a GameChoiceScene Object.
      *
      * @param mainClass The driver class of this program. Used to set the current scene of the stage.
      */
     public GameChoiceScene(ArcadeApp mainClass) {
-       	super(new StackPane()); //Instantiate parent and pass parent as an argument to super.
+       	super(new VBox()); //Instantiate parent and pass parent as an argument to super.
 
-		this.parent = (StackPane) getRoot(); //Get the parent of the scene graph
+		this.parent = (VBox) getRoot(); //Get the parent of the scene graph
 		this.mainClass = mainClass;
 
 		init(); //initialize the scene
@@ -38,6 +39,7 @@ public class GameChoiceScene extends Scene {
      * Initialize the scene. Sets the background and adds two images allowing users to choose their game of choice.
      */
     private void init() {
+    	StackPane stackPane = new StackPane();
 		ImageView backgroundView = new ImageView(); //The background
     	Image background = new Image(getClass().getClassLoader().getResource("Arcade-Background.jpg").toString()); //Load in the background
 	
@@ -64,7 +66,8 @@ public class GameChoiceScene extends Scene {
 		parent.setAlignment(Pos.CENTER);
 
 		pane.getChildren().addAll(msSelector, bSelector);
-		parent.getChildren().addAll(backgroundView, pane); //Add children to parent
+		stackPane.getChildren().addAll(backgroundView, pane); //Add children to parent
+		parent.getChildren().addAll(new MenuBar(mainClass.getHighScores()), stackPane);
     }
 
     /**

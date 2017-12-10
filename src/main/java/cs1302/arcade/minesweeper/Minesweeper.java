@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
@@ -58,6 +59,7 @@ public class Minesweeper extends Game{
     @Override
     public Scene initScene(){
         VBox parent = new VBox(); //Parent Node
+        MenuBar bar = new MenuBar(app.getHighScores()); //Menu bar to access high scores
         Scene scene = new Scene(parent); //Scene that will be used
         BorderPane bPane = new BorderPane(); //Will contain the scores
 
@@ -109,7 +111,7 @@ public class Minesweeper extends Game{
             }
         }
 
-        parent.getChildren().addAll(bPane, gPane); //Add children to stuff
+        parent.getChildren().addAll(bar, bPane, gPane); //Add children to stuff
 
         return scene;
     }//init Scene

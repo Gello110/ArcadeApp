@@ -8,6 +8,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -82,8 +84,19 @@ public class ArcadeApp extends Application {
      *
      * @return The Scores object that handles scores
      */
-    public Scores getScoreHandler() {
+    Scores getScoreHandler() {
         return this.scores;
+    }
+
+    public Menu getHighScores() {
+        Menu menu = new Menu("Stats");
+        MenuItem menuItem = new MenuItem("_High Scores");
+
+        menuItem.setOnAction(e -> getScoreHandler().displayScores());
+
+        menu.getItems().add(menuItem);
+
+        return menu;
     }
 
     /**

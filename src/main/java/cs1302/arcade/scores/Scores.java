@@ -68,7 +68,7 @@ public class Scores {
     /**
      * Makes an application modal window that displays the top high scores
      */
-    public void diplayScores(){
+    public void displayScores(){
         Stage s = new Stage();
         VBox vbox = new VBox(10);
         HBox hBox = new HBox(10);
