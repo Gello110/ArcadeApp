@@ -24,6 +24,9 @@ public class Scores {
     private ArrayList<Entry> bScores;
     private ArrayList<Entry> mScores;
 
+    private File bFile;
+    private File mFile;
+
     /**
      * creates a score class
      */
@@ -31,18 +34,17 @@ public class Scores {
         bScores = new ArrayList<>();
         mScores = new ArrayList<>();
         try {
-            File b = new File("bScores.txt");
-            File m = new File("mScores.txt");
+            bFile = new File(System.getProperty("user.dir"), "bScores.txt");
+            mFile = new File(System.getProperty("user.dir"),"mScores.txt");
 
-
-            b.createNewFile();//makes sure file exists
-            m.createNewFile();//makes sure file exists
+            bFile.createNewFile();//makes sure file exists
+            mFile.createNewFile();//makes sure file exists
 
             BufferedReader breakout;
             BufferedReader minesweeper;
 
-            breakout = new BufferedReader(new FileReader(b));
-            minesweeper = new BufferedReader(new FileReader(m));
+            breakout = new BufferedReader(new FileReader(bFile));
+            minesweeper = new BufferedReader(new FileReader(mFile));
 
             String person;
             String[] data;//data for a person
@@ -173,13 +175,11 @@ public class Scores {
      */
     public void write(){
         try {
-            //makes file objects to write to
-            File bScore = new File("bScore.txt");//breakout score file
-            bScore.createNewFile();
-            BufferedWriter bWriter = new BufferedWriter(new FileWriter(bScore));
-            File mScore = new File("mScores.txt");//minesweeper score file
-            mScore.createNewFile();
-            BufferedWriter mWriter = new BufferedWriter(new FileWriter(mScore));
+            bFile.createNewFile();
+            mFile.createNewFile();
+
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(bFile));
+            BufferedWriter mWriter = new BufferedWriter(new FileWriter(mFile));
 
             //writes breakout scores
             for(Entry e: bScores){
@@ -190,6 +190,7 @@ public class Scores {
             //writes minesweeper scores
             for(Entry e: mScores){
                 mWriter.write(e.getName() + " " + e.getScore());
+                mWriter.newLine();
             }//for e in mScores
 
             bWriter.close();
