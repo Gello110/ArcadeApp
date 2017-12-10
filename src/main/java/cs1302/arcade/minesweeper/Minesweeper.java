@@ -126,9 +126,9 @@ public class Minesweeper extends Game{
         Text message = new Text(); //Message to display
 
         if(won){
-            message.setText("Congrats\nYou Won\nScore: " + gameBoard.getScore()); //Show win message
+            message.setText("Congrats\nYou Won\nScore: " + getScore()); //Show win message
         }else{
-            message.setText("You Lost\nScore: " + gameBoard.getScore()); //Show lose message
+            message.setText("You Lost\nScore: " + getScore()); //Show lose message
 
             //reveals all the mines in the game
             Cell[][] board = gameBoard.getBoard(); //get game board
@@ -196,7 +196,7 @@ public class Minesweeper extends Game{
 
     @Override
     public int getScore() {
-        return gameBoard.getScore();
+        return timer;
     }
 
     /**
