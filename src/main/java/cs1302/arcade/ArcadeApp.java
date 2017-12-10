@@ -37,6 +37,11 @@ public class ArcadeApp extends Application {
         timeline.play();
     } // start
 
+    @Override
+    public void stop(){
+        scores.write();
+    }
+
     /**
      * Sets the current scene of the stage being shown.
      *
