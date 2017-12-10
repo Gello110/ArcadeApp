@@ -25,7 +25,6 @@ public class Breakout extends Game{
     private static final int HEIGHT = 600;
     private static final int WIDTH = 750;
 
-    private final ArcadeApp app;
     private Block[][] blocks;
     private Paddle paddle;
     private Ball ball;
@@ -301,7 +300,7 @@ public class Breakout extends Game{
     }//gameEnded
 
     /**
-     * changes direction of the ball hits uppoe border
+     * changes direction of the ball hits uppoer border
      */
     private void hitUp(){
         if(ball.getY() - ball.getRadius() <= 0 && ball.getDirection().isN()){

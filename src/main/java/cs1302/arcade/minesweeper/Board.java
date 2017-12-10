@@ -204,18 +204,6 @@ class Board {
 	}//unflag
 
 	/**
-	 *  Returns the score for the round
-	 *
-	 *  @return the score for the round
-	 */
-	int getScore(){
-		if(round >= 216){
-			return 0;
-		}
-		return board.length * board[0].length - round - 40;
-	}//getScore
-
-	/**
 	 * Gets the total number of flags the user has placed
 	 *
 	 * @return The total number of flags placed

@@ -1,12 +1,15 @@
 
 package cs1302.arcade;
 
+import cs1302.arcade.scores.Scores;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -16,11 +19,13 @@ import javafx.util.Duration;
 public class ArcadeApp extends Application {
 
     private Stage stage;
+    private Scores scores;
     private boolean isShown;
 
     @Override
     public void start(Stage stage) {
         this.stage = stage;
+        this.scores = new Scores();
 
         stage.setTitle("Arcade");
 
@@ -31,6 +36,11 @@ public class ArcadeApp extends Application {
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(2500), event -> setCurrentScene(new GameChoiceScene(this)))); //Display game choice scene three seconds later
         timeline.play();
     } // start
+
+    @Override
+    public void stop(){
+        scores.write();
+    }
 
     /**
      * Sets the current scene of the stage being shown.
@@ -72,6 +82,26 @@ public class ArcadeApp extends Application {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
+    }
+
+    /**
+     * Gets the score handler for this arcade
+     *
+     * @return The Scores object that handles scores
+     */
+    Scores getScoreHandler() {
+        return this.scores;
+    }
+
+    public Menu getHighScores() {
+        Menu menu = new Menu("Stats");
+        MenuItem menuItem = new MenuItem("_High Scores");
+
+        menuItem.setOnAction(e -> getScoreHandler().displayScores());
+
+        menu.getItems().add(menuItem);
+
+        return menu;
     }
 
     /**

@@ -13,6 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -41,7 +44,6 @@ public class Minesweeper extends Game{
     private Text time; //Text displaying the time the player has been playing
     private GridPane gPane;//GridPane containing th cells of the game
     private int timer;//Seconds since game has started
-    private final ArcadeApp app;
     private Timeline timing;//timer for the game
     private boolean started;
 
@@ -51,9 +53,7 @@ public class Minesweeper extends Game{
      *  Constructs a minesweeper game
      */
     public Minesweeper(ArcadeApp app){
-	    super("Minesweeper");
-
-        this.app = app;
+	    super("Minesweeper", app);
 
 	    gameBoard = new Board(GAME_ROWS, GAME_COLUMNS, this); //Initiate game board
         cellsChanged = new HashSet<>();
@@ -62,6 +62,7 @@ public class Minesweeper extends Game{
     @Override
     public Scene initScene(){
         VBox parent = new VBox(); //Parent Node
+        MenuBar bar = new MenuBar(app.getHighScores()); //Menu bar to access high scores
         Scene scene = new Scene(parent); //Scene that will be used
         BorderPane bPane = new BorderPane(); //Will contain the scores
 
@@ -124,7 +125,7 @@ public class Minesweeper extends Game{
             }
         }
 
-        parent.getChildren().addAll(bPane, gPane); //Add children to stuff
+        parent.getChildren().addAll(bar, bPane, gPane); //Add children to stuff
 
         return scene;
     }//init Scene
@@ -139,9 +140,9 @@ public class Minesweeper extends Game{
         Text message = new Text(); //Message to display
 
         if(won){
-            message.setText("Congrats\nYou Won\nScore: " + gameBoard.getScore()); //Show win message
+            message.setText("Congrats\nYou Won\nScore: " + getScore()); //Show win message
         }else{
-            message.setText("You Lost\nScore: " + gameBoard.getScore()); //Show lose message
+            message.setText("You Lost\nScore: " + getScore()); //Show lose message
 
             //reveals all the mines in the game
             Cell[][] board = gameBoard.getBoard(); //get game board
@@ -177,7 +178,7 @@ public class Minesweeper extends Game{
         container.setAlignment(Pos.CENTER);
         container.setPadding(new Insets(20)); //Set padding
 
-        container.getChildren().add(message);
+        container.getChildren().addAll(message, getInputArea(s));
 
         s.setScene(scene); //set the scene
         s.initModality(Modality.APPLICATION_MODAL);
@@ -205,12 +206,11 @@ public class Minesweeper extends Game{
     @Override
     public boolean isOver(){
 	    return gameBoard.getOver();
-
     }//isOver
-    
+
     @Override
     public int getScore() {
-        return gameBoard.getScore();
+        return timer;
     }
 
     /**
