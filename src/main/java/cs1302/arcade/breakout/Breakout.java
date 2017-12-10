@@ -88,7 +88,7 @@ public class Breakout extends Game{
 
         //adds all menutiems to game
         game.getItems().addAll(newGame, sGame);
-        MenuBar bar = new MenuBar(game);
+        MenuBar bar = new MenuBar(game, app.getHighScores());
 
 
         //makes the pane for the game
