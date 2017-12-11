@@ -10,6 +10,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -60,13 +62,10 @@ public class Minesweeper extends Game{
     @Override
     public Scene initScene(){
         VBox parent = new VBox(); //Parent Node
-        MenuBar bar = new MenuBar(app.getHighScores()); //Menu bar to access high scores
         Scene scene = new Scene(parent); //Scene that will be used
         BorderPane bPane = new BorderPane(); //Will contain the scores
 
         minesLeft = new Text(String.format("%03d", gameBoard.getMinesLeft())); //The mines left to be found
-        Button newGame = new Button("New Game"); //Button player clicks to start a new game.
-        Button change = new Button("Switch Game"); //Button player clicks to switch games
         time = new Text(String.format("%03d", timer)); //The time spent playing the game
 
         Font digital = Font.loadFont(getClass().getClassLoader().getResource("digital.ttf").toString(), 30);
@@ -75,6 +74,10 @@ public class Minesweeper extends Game{
             minesLeft.setFont(digital); //set fonts
             time.setFont(digital);
         }
+
+        Menu game = new Menu("Game");
+        MenuItem newGame = new MenuItem("_New Game");
+        MenuItem change = new MenuItem("_Switch Game");//menuItem to return to game select screen
 
         newGame.setOnAction(action -> {
             app.setCurrentGame(new Minesweeper(app));
@@ -85,9 +88,9 @@ public class Minesweeper extends Game{
             gameBoard.end(); //end current iteration of this game
         });
 
-        HBox buttons = new HBox(20); //HBox for buttons
-        buttons.getChildren().addAll(newGame, change); //add buttons
-        buttons.setAlignment(Pos.CENTER); //set alignment
+        game.getItems().addAll(newGame, change); //add menu items
+
+        MenuBar bar = new MenuBar(game, app.getHighScores()); //Menu bar to access high scores
 
         //makes keyframe
         timing = new Timeline();
@@ -102,11 +105,9 @@ public class Minesweeper extends Game{
         timing.play();
 
         bPane.setRight(minesLeft); //Set position
-        bPane.setCenter(buttons);
         bPane.setLeft(time);
 
         BorderPane.setAlignment(minesLeft, Pos.CENTER_LEFT); //Set alignment
-        BorderPane.setAlignment(buttons, Pos.CENTER);
         BorderPane.setAlignment(time, Pos.CENTER_RIGHT);
 
         gPane = new GridPane(); //Will contain the grid of tiles the player interacts with
