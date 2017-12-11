@@ -16,13 +16,14 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Class handling the high scores for minesweeper and breakout
  */
 public class Scores {
-    private ArrayList<Entry> bScores;
-    private ArrayList<Entry> mScores;
+    private final ArrayList<Entry> bScores;
+    private final ArrayList<Entry> mScores;
 
     private File bFile;
     private File mFile;
@@ -85,10 +86,10 @@ public class Scores {
 
         //breakout scores
         TableColumn<Entry, String> bName = new TableColumn<>("Name");
-        bName.setCellValueFactory(new PropertyValueFactory<Entry, String>("name"));
+        bName.setCellValueFactory(new PropertyValueFactory<>("name"));
         bName.setMinWidth(150);
         TableColumn<Entry, Integer> bScore = new TableColumn<>("Score");
-        bScore.setCellValueFactory(new PropertyValueFactory<Entry, Integer>("score"));
+        bScore.setCellValueFactory(new PropertyValueFactory<>("score"));
         bScore.setMinWidth(150);
 
         TableView<Entry> bTable = new TableView<>();//table of breakout scores
@@ -103,10 +104,10 @@ public class Scores {
 
         //minesweeper scores
         TableColumn<Entry, String> mName = new TableColumn<>("Name");
-        mName.setCellValueFactory(new PropertyValueFactory<Entry, String>("name"));
+        mName.setCellValueFactory(new PropertyValueFactory<>("name"));
         mName.setMinWidth(150);
         TableColumn<Entry, Integer> mScore = new TableColumn<>("Score");
-        mScore.setCellValueFactory(new PropertyValueFactory<Entry, Integer>("score"));
+        mScore.setCellValueFactory(new PropertyValueFactory<>("score"));
         mScore.setMinWidth(150);
 
         TableView<Entry> mTable = new TableView<>();//table of minesweeper scores
@@ -142,13 +143,12 @@ public class Scores {
      * @param game  name of the game
      * @param name  name of the player
      * @param score  score of the player
-     * @return
      */
-    public boolean addScore(String game, String name, int score){
+    public void addScore(String game, String name, int score){
         if(game.equalsIgnoreCase("minesweeper")){
             //adds score to list of scores and sorts
             mScores.add(new Entry(name,score));
-            mScores.sort((e1, e2) -> e2.compareTo(e1));
+            mScores.sort(Comparator.reverseOrder());
 
             //truncates list of scores if list longer than 10
             if(mScores.size() > 10){
@@ -157,7 +157,7 @@ public class Scores {
         }else if(game.equalsIgnoreCase("breakout")){
             //adds score to list of scores and sorts
             bScores.add(new Entry(name, score));
-            bScores.sort((e1, e2) -> e2.compareTo(e1));
+            bScores.sort(Comparator.reverseOrder());
 
             //truncates list of scores if list longer than 10
             if(bScores.size() > 10){
@@ -165,9 +165,7 @@ public class Scores {
             }
 
         }else{
-            return false;
         }
-        return true;
     }//addScore
 
     /**

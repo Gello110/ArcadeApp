@@ -3,9 +3,9 @@ package cs1302.arcade.scores;
 /**
  * Class representing an entry in the high score table
  */
-public class Entry implements Comparable<Entry> {
-    private String name;
-    private Integer score;
+class Entry implements Comparable<Entry> {
+    private final String name;
+    private final Integer score;
 
     /**
      * Makes an entry object

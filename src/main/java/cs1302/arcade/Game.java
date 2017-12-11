@@ -5,8 +5,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -18,7 +16,7 @@ import javafx.stage.Stage;
 public abstract class Game {
 
     private final String name;
-    protected ArcadeApp app;
+    protected final ArcadeApp app;
     private int score;
 
     /**

@@ -18,8 +18,8 @@ import javafx.scene.layout.VBox;
  */
 public class GameChoiceScene extends Scene {
 
-    private ArcadeApp mainClass;
-    private VBox parent;
+    private final ArcadeApp mainClass;
+    private final VBox parent;
     /**
      * Constructs a GameChoiceScene Object.
      *
