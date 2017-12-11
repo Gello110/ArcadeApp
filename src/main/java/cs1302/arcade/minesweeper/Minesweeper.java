@@ -76,7 +76,10 @@ public class Minesweeper extends Game{
             time.setFont(digital);
         }
 
-        newGame.setOnAction(action -> app.setCurrentGame(new Minesweeper(app))); //Reset board for new game
+        newGame.setOnAction(action -> {
+            app.setCurrentGame(new Minesweeper(app));
+            gameBoard.end();//ends current iteration of game
+        }); //Reset board for new game
         change.setOnAction(e -> {
             app.setCurrentScene(new GameChoiceScene(app)); //switch back to game choice scene
             gameBoard.end(); //end current iteration of this game

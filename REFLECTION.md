@@ -28,4 +28,9 @@ that the Markdown is transformed into nice looking HTML.
 2. **TODO:** Start and finish Breakout and test.
 3. **PROB:** Trouble with slow internet connection at workplace.
 
-## WED 2017-11-
+## SUN 2017-12-17 @ 5:34 PM EST
+1. **DONE** Finished Breakout and extra credit, included intro animation extra credit requirement and high score table requirement,
+            fixed minesweeper bugs, improved endgame, added ability to switch between games, fixed intro animation to fit screen,
+            tested the games and application
+2. **TODO:** Submit project
+3. **PROB:** Breakout block collision logic, high score implementation, unflagging minesweeper cells,
