@@ -139,10 +139,15 @@ public class Minesweeper extends Game{
      */
     void endGame(boolean won){
         timing.stop();
+
+        Stage s = new Stage(); //Create new stage do display win
         Text message = new Text(); //Message to display
+        HBox input = null; //input area for player name if they won
 
         if(won){
             message.setText("Congrats\nYou Won\nScore: " + getScore()); //Show win message
+
+            input = getInputArea(s);
         }else{
             message.setText("You Lost\nScore: " + getScore()); //Show lose message
 
@@ -172,15 +177,17 @@ public class Minesweeper extends Game{
 
         message.setFont(new Font(40)); //Make the font larger
 
-        Stage s = new Stage(); //Create new stage do display win
         VBox container = new VBox(50); //Parent container
         Scene scene = new Scene(container); //Scene to show
 
-        message.setTextAlignment(TextAlignment.CENTER); //Set alighment
+        message.setTextAlignment(TextAlignment.CENTER); //Set alignment
         container.setAlignment(Pos.CENTER);
         container.setPadding(new Insets(20)); //Set padding
 
-        container.getChildren().addAll(message, getInputArea(s));
+        container.getChildren().add(message);
+
+        if(input != null)
+            container.getChildren().add(input); //add if not null
 
         s.setScene(scene); //set the scene
         s.initModality(Modality.APPLICATION_MODAL);
