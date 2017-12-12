@@ -1,4 +1,4 @@
-## Instructions for Arcade
+# Instructions for Arcade
    These are the instructions for the arcade app made for the fifth and final project of the CSCI1302 fall 2017 course 
    at the University of Georgia
 
