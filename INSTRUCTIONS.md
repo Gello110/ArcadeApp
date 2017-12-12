@@ -20,4 +20,4 @@
 ## Minesweeper
    Click on cells on the board to reveal all the spaces without mines. Use the numbers to deduce the locations of the mines/
    spaces to avoid. The game is won when all spaces not containing mines are revealed or lost when the player reveals a mine. 
-   Scores are the time it takes to finish the game, lower is better.
+   Scores are the time it takes to finish the game, lower is better. Only the scores of winning games can be recorded.
