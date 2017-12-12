@@ -52,14 +52,14 @@ public class Scores {
 
             int i = 0;
             while ((person = breakout.readLine()) != null && i < 10) {
-                data = person.split(" ");
+                data = person.split("---");
                 bScores.add(new Entry(data[0], Integer.parseInt(data[1])));
                 i++;
             }
 
             i = 0;
             while((person = minesweeper.readLine()) != null && i < 10){
-                data = person.split(" ");
+                data = person.split("---");
                 mScores.add(new Entry(data[0], Integer.parseInt(data[1])));
                 i++;
             }
@@ -181,13 +181,13 @@ public class Scores {
 
             //writes breakout scores
             for(Entry e: bScores){
-                bWriter.write(e.getName() + " " + e.getScore());
+                bWriter.write(e.getName() + "---" + e.getScore());
                 bWriter.newLine();
             }//for e in bScores
 
             //writes minesweeper scores
             for(Entry e: mScores){
-                mWriter.write(e.getName() + " " + e.getScore());
+                mWriter.write(e.getName() + "---" + e.getScore());
                 mWriter.newLine();
             }//for e in mScores
 
