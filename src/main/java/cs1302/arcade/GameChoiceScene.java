@@ -11,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * Class used to provide the user with a window to choose the game
@@ -57,7 +59,12 @@ public class GameChoiceScene extends Scene {
 
 		setImage(bSelector, breakout, 200, 600); //Set the breakout image to the breakout selector ImageView with size 100 x 200
 
-		bSelector.setOnMouseClicked(event -> mainClass.setCurrentGame(new Breakout(mainClass))); //On click open breakout
+		bSelector.setOnMouseClicked(event -> {
+			mainClass.setCurrentGame(new Breakout(mainClass));
+
+			MediaPlayer player = new MediaPlayer(new Media(getClass().getClassLoader().getResource("tetrisMusic.wav").toString()));
+			player.play();
+		}); //On click open breakout
 
 		pane.setPadding(new Insets(20, 20, 20, 20));
 		pane.setSpacing(40);

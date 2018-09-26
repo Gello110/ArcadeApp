@@ -3,6 +3,7 @@ package cs1302.arcade.breakout;
 import cs1302.arcade.ArcadeApp;
 import cs1302.arcade.Game;
 import cs1302.arcade.GameChoiceScene;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,12 +12,16 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 /**
  *  Class representing a breakout game
@@ -138,6 +143,7 @@ public class Breakout extends Game{
         newBall(); //spawn first ball
 
         parent.getChildren().addAll(bar, stats, pane); //add everything to pane
+
 
         return scene;
     }//init Scene

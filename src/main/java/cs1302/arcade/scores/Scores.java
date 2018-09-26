@@ -148,7 +148,7 @@ public class Scores {
         if(game.equalsIgnoreCase("minesweeper")){
             //adds score to list of scores and sorts
             mScores.add(new Entry(name,score));
-            mScores.sort(Comparator.reverseOrder());
+            mScores.sort(Comparator.naturalOrder());
 
             //truncates list of scores if list longer than 10
             if(mScores.size() > 10){

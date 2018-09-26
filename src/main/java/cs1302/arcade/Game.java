@@ -92,6 +92,7 @@ public abstract class Game {
 
         input.setOnAction(handler); //set event handler
         button.setOnAction(handler);
+        button.setDefaultButton(true);
 
         input.setMaxWidth(100); //set width of input area
 
